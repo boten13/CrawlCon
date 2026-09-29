@@ -40,6 +40,8 @@ private void showWelcomeMessage() {
 //So I do not have to type this again everytime an action is preformed.
 private void chooseNextMessage(){
     System.out.println("What would you like to do now?");
+    String userInput = scanner.nextLine();
+    chooseAction(userInput);
 }
 
 //Register Player name
@@ -75,6 +77,7 @@ private void chooseAction(String action) {
         checkLevel();
     } else {
         System.out.println("Fix the code related to this word: " + action);
+        chooseNextMessage();
     }
 }
 
@@ -100,7 +103,8 @@ private void headSouth() {
 
 //Initiate combat
 private void fuckEmUP() {
-
+    player.Fight();
+    chooseNextMessage();
 }
 
 //Check Map Location
