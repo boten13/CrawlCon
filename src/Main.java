@@ -1,3 +1,5 @@
+import Util.Player;
+
 /**
  *
  */
@@ -14,6 +16,7 @@ private final String FIGHT = "FIGHT";
 private final String INVENTORY = "INVENTORY";
 private final String LEVEL = "LEVEL";
 private String playerName = "";
+Player player;
 //private final String CHECK_TIME = "CLOCK";
 
 private ArrayList<String> playerCommands = new ArrayList<>(
@@ -42,6 +45,7 @@ private void chooseNextMessage(){
 //Register Player name
 private void nameYourCharacter() {
     playerName = scanner.nextLine();
+    player = new Player(playerName);
 }
 
 //Check input vs actions possible
