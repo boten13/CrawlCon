@@ -53,7 +53,7 @@ public class Goblin {
 
     //Generate damage for Goblin Combat
     private int setGoblinDamage() {
-        goblinDamage = rand.nextInt(1, 6);
+        goblinDamage = rand.nextInt(0, 6);
         return goblinDamage;
     }
 
