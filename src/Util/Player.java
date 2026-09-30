@@ -14,11 +14,9 @@ public class Player {
     private int playerLevel;
     private int neededExp;
     private int playersHealth;
-    int gobExp = 50;
-    int gobHealth = 5;
     Random rand = new Random();
 
-    //Stores Player Registerd name provided at the beginning of the game;
+// Stores Player Registerd name provided at the beginning of the game;
     public Player(String playerName) {
         name = playerName;
         playerLevel = 1;
@@ -53,14 +51,14 @@ public class Player {
     //Quick code to add experience to the player when fighting
     //Code will be removed in future updates, only currently being implemented for testing purposes
     public void Fight() {
-        int randomDamage = rand.nextInt(1, 5);
-        gobHealth -= randomDamage;
-        if (gobHealth <= 0) {
-            System.out.println("You killed it!");
-            playerExp += gobExp;
-        } else {
-            System.out.println("It has " + gobHealth + " HP still.");
-        }
+//        int randomDamage = rand.nextInt(1, 5);
+//        gobHealth -= randomDamage;
+//        if (gobHealth <= 0) {
+//            System.out.println("You killed it!");
+//            playerExp += gobExp;
+//        } else {
+//            System.out.println("It has " + gobHealth + " HP still.");
+//        }
     }
 
     //Pull up Character Stats

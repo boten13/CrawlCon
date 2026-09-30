@@ -1,5 +1,7 @@
 package Util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -14,7 +16,11 @@ public class Goblin {
     private int goblinHealth;
     private int goblinExpGiven;
     private int goblinDamage;
+    public String goblinName ="";
     Random rand = new Random();
+    ArrayList<String> goblinNames = new ArrayList<>(
+            List.of("Jerry", "Betsy", "Mitch", "Balthazar", "Gary", "Bob", "Ditsy", "Tom", "Michelle")
+    );
 
 
     //Create Random Goblin stats and feed it to main for combat.
@@ -22,13 +28,15 @@ public class Goblin {
         goblinDamage = setGoblinDamage();
         goblinExpGiven = setGoblinExpGiven();
         goblinHealth = setGoblinHealth();
+        goblinName = getRandomGoblinName();
     }
 
     //Test code for displaying stored values
     public void displayGoblin() {
-        System.out.println("Will hit you with " + goblinDamage + " damage.");
-        System.out.println("Will give you " + goblinExpGiven + " exp when you kill it.");
-        System.out.println("Has " + goblinHealth + " health points.");
+        System.out.println("Name: " + goblinName);
+        System.out.println("Damage numbers: " + goblinDamage);
+        System.out.println("Exp pool: " + goblinExpGiven);
+        System.out.println("Health pool: " + goblinHealth);
     }
 
     //Create random amount of exp given for killing mob.
@@ -48,5 +56,15 @@ public class Goblin {
         goblinDamage = rand.nextInt(1, 6);
         return goblinDamage;
     }
+
+    //Generate random index for the name for Goblin in list
+    private String getRandomGoblinName(){
+        int listSize = goblinNames.size();
+        int randomIndex = rand.nextInt(1, listSize);
+        return goblinNames.get(randomIndex);
+    }
+
+    //Pull random name out of arraylist
+
 
 }

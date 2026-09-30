@@ -154,6 +154,7 @@ private void headSouth() {
 
 //Initiate combat
 private void startCombat() {
+    goblin.createGoblinMob();
     System.out.println("You have initiated combat with a creature. Choose your next action.");
     System.out.println(combatCommands);
     String choosenCombatAction = scanner.nextLine();
@@ -178,8 +179,8 @@ private void useAnItemFromInventory() {
 }
 //Talk with Creature (Will have rare chance of having discussion with creature.)
 private void talkWithCreature() {
-    goblin.createGoblinMob();
-    System.out.println(goblin);
+    String name = goblin.goblinName;
+    System.out.println(name);
     chooseNextCombatMessage();
 }
 
