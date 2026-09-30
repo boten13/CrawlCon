@@ -53,14 +53,14 @@ public class Goblin {
 
     //Generate damage for Goblin Combat
     private int setGoblinDamage() {
-        goblinDamage = rand.nextInt(0, 6);
+        goblinDamage = rand.nextInt(1, 6);
         return goblinDamage;
     }
 
     //Generate random index for the name for Goblin in list
     private String getRandomGoblinName(){
         int listSize = goblinNames.size();
-        int randomIndex = rand.nextInt(1, listSize);
+        int randomIndex = rand.nextInt(0, listSize);
         return goblinNames.get(randomIndex);
     }
 
