@@ -164,7 +164,7 @@ private void startCombat() {
 
 //Attack Creature
 private void attackCreature() {
-    player.Fight();
+    fightTheMob();
     player.getExpRequiredForLeveling();
     chooseNextMessage();
 }
@@ -204,6 +204,13 @@ private void checkInventory() {
 private void cheatMode() {
     goblin.displayGoblin();
     chooseNextCombatMessage();
+}
+
+/** The fight function has been moved here instead of under the Player class where it did not belong.
+ * Will need help on parsing in intel from player class and mob class to preform combat logic here.
+ */
+private void fightTheMob(){
+
 }
 
 private void endGame() {
