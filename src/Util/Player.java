@@ -1,7 +1,9 @@
 package Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Player Class to have all functions related to the player itself stored
@@ -25,13 +27,18 @@ public class Player {
 
     //Checks exp needed to level;
     public int getExpRequiredForLeveling(int exp, int level) {
-        ArrayList<Integer> requiredExp = new ArrayList<>(
-                List.of(150, 275, 475, 1000)
-        );
+        // Key = level, value = related experience to get to that level
+        Map<Integer, Integer> levelMap = new HashMap<>();
+        levelMap.put(2, 150);
+        levelMap.put(3, 275);
+        levelMap.put(4, 475);
+        levelMap.put(5, 1000);
 
-        int nextLevel = requiredExp.get(playerLevel - 2);
-       int expNeeded = playerExp - nextLevel;
-       return expNeeded;
+        int requiredExp = levelMap.get(level);
+        return requiredExp;
+//        int nextLevel = requiredExp.get(playerLevel - 2);
+//       int expNeeded = playerExp - nextLevel;
+//       return expNeeded;
     }
 
     //Quick code to add experience to the player when fighting
