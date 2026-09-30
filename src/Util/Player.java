@@ -1,8 +1,6 @@
 package Util;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import Util.Goblin;
+import java.util.*;
 import java.util.Map;
 
 /**
@@ -16,6 +14,9 @@ public class Player {
     private int playerLevel;
     private int neededExp;
     private int playersHealth;
+    int gobExp = 50;
+    int gobHealth = 5;
+    Random rand = new Random();
 
     //Stores Player Registerd name provided at the beginning of the game;
     public Player(String playerName) {
@@ -52,12 +53,17 @@ public class Player {
     //Quick code to add experience to the player when fighting
     //Code will be removed in future updates, only currently being implemented for testing purposes
     public void Fight() {
-        int gobExp = 50;
-        System.out.println("You have slain a goblin and gained " + gobExp + " points of experience!" );
-        playerExp += gobExp;
-        System.out.println("Your current expierence is at " + playerExp + ".");
+        int randomDamage = rand.nextInt(1, 5);
+        gobHealth -= randomDamage;
+        if (gobHealth <= 0) {
+            System.out.println("You killed it!");
+            playerExp += gobExp;
+        } else {
+            System.out.println("It has " + gobHealth + " HP still.");
+        }
     }
 
+    //Pull up Character Stats
     public void checkCharacterSheet() {
         if (playerExp == 0) {
             System.out.println("You literally just got in here, go fight something you dullard.");

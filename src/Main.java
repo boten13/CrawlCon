@@ -16,13 +16,23 @@ private final String FIGHT = "FIGHT";
 private final String INVENTORY = "INVENTORY";
 private final String CHARACTER_SHEET = "CHARACTER SHEET";
 private final String END_GAME = "END GAME";
+private final String ATTACK_CREATURE = "ATTACK";
+private final String RUN = "RUN";
+private final String USE_ITEM = "USE ITEM";
+private final String TALK = "TALK";
 private String playerName = "";
 Player player;
 //private final String CHECK_TIME = "CLOCK";
 
+//List of commands the player is prompted to use.
 private ArrayList<String> playerCommands = new ArrayList<>(
         List.of(DIRECTION_EAST, DIRECTION_NORTH, DIRECTION_SOUTH, DIRECTION_WEST, MAP_CHECK, FIGHT, INVENTORY,
                 CHARACTER_SHEET, END_GAME)
+);
+
+//List of commands the player is prompted to use while fighting.
+private ArrayList<String> combatCommands = new ArrayList<>(
+        List.of(ATTACK_CREATURE, RUN, USE_ITEM, TALK)
 );
 void main() {
     showWelcomeMessage();
@@ -46,6 +56,13 @@ private void chooseNextMessage(){
     chooseAction(userInput);
 }
 
+//Same thing as above to continue with combat options and lazieness.
+private void chooseNextCombatMessage() {
+    System.out.println("What is your next choice, Crawler " + playerName  + "?");
+    String userInput = scanner.nextLine();
+    chooseCombatAction(userInput);
+}
+
 //Register Player name
 private void nameYourCharacter() {
     playerName = scanner.nextLine();
@@ -58,7 +75,7 @@ private void chooseAction(String action) {
     if (!playerCommands.contains(actionInAllCaps)) {
         System.out.println("Please pay attention, crawler! I do not have all day to repeat myself for you.");
         System.out.println(action + " is not a valid option. Try again.");
-        return;
+        chooseNextMessage();
     }
 
     if (DIRECTION_EAST.equals(actionInAllCaps)) {
@@ -72,7 +89,7 @@ private void chooseAction(String action) {
     } else if (MAP_CHECK.equals(actionInAllCaps)) {
         checkMap();
     } else if (FIGHT.equals(actionInAllCaps)) {
-        fuckEmUP();
+        startCombat();
     } else if (INVENTORY.equals(actionInAllCaps)) {
         checkInventory();
     } else if (CHARACTER_SHEET.equals(actionInAllCaps)) {
@@ -82,6 +99,29 @@ private void chooseAction(String action) {
     } else {
         System.out.println("Fix the code related to this word: " + action);
         chooseNextMessage();
+    }
+}
+
+//Check input vs output on Fighting Commands list.
+private void chooseCombatAction(String action) {
+    String actionInAllCaps = action.toUpperCase();
+    if (!combatCommands.contains(actionInAllCaps)) {
+        System.out.println("Please pay attention, crawler! I do not have all day to repeat myself for you.");
+        System.out.println(action + " is not a valid option. Try again.");
+        chooseNextCombatMessage();
+    }
+
+    if (ATTACK_CREATURE.equals(actionInAllCaps)) {
+        attackCreature();
+    } else if (RUN.equals(actionInAllCaps)) {
+        runAway();
+    } else if (USE_ITEM.equals(actionInAllCaps)) {
+        useAnItemFromInventory();
+    } else if (TALK.equals(actionInAllCaps)) {
+        talkWithCreature();
+    } else {
+        System.out.println("Fix the code related to this word: " + action);
+        chooseNextCombatMessage();
     }
 }
 
@@ -106,10 +146,32 @@ private void headSouth() {
 }
 
 //Initiate combat
-private void fuckEmUP() {
+private void startCombat() {
+    System.out.println("You have initiated combat with a creature. Choose your next action.");
+    System.out.println(combatCommands);
+    String choosenCombatAction = scanner.nextLine();
+    chooseCombatAction(choosenCombatAction);
+    chooseNextCombatMessage();
+}
+
+//Attack Creature
+private void attackCreature() {
     player.Fight();
     player.getExpRequiredForLeveling();
     chooseNextMessage();
+}
+
+//Run From Creature. (Small chance of succeeding, failure will result in damage to player.)
+private void runAway() {
+
+}
+//Use an item in your inventory. Pull up inventory list.
+private void useAnItemFromInventory() {
+
+}
+//Talk with Creature (Will have rare chance of having discussion with creature.)
+private void talkWithCreature() {
+
 }
 
 //Check Map Location
