@@ -1,3 +1,4 @@
+import Util.Goblin;
 import Util.Player;
 
 /**
@@ -20,6 +21,8 @@ private final String ATTACK_CREATURE = "ATTACK";
 private final String RUN = "RUN";
 private final String USE_ITEM = "USE ITEM";
 private final String TALK = "TALK";
+private final String CHEAT = "CHEAT";
+Goblin goblin = new Goblin();
 private String playerName = "";
 Player player;
 //private final String CHECK_TIME = "CLOCK";
@@ -105,6 +108,10 @@ private void chooseAction(String action) {
 //Check input vs output on Fighting Commands list.
 private void chooseCombatAction(String action) {
     String actionInAllCaps = action.toUpperCase();
+    if (CHEAT.equals(actionInAllCaps)) {
+        cheatMode();
+    }
+
     if (!combatCommands.contains(actionInAllCaps)) {
         System.out.println("Please pay attention, crawler! I do not have all day to repeat myself for you.");
         System.out.println(action + " is not a valid option. Try again.");
@@ -171,7 +178,9 @@ private void useAnItemFromInventory() {
 }
 //Talk with Creature (Will have rare chance of having discussion with creature.)
 private void talkWithCreature() {
-
+    goblin.createGoblinMob();
+    System.out.println(goblin);
+    chooseNextCombatMessage();
 }
 
 //Check Map Location
@@ -188,6 +197,12 @@ private void characterSheet() {
 //Check Character Inventory
 private void checkInventory() {
 
+}
+
+//Cheat mode to display goblin information
+private void cheatMode() {
+    goblin.displayGoblin();
+    chooseNextCombatMessage();
 }
 
 private void endGame() {
