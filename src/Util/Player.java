@@ -14,6 +14,7 @@ public class Player {
     private int playerLevel;
     private int neededExp;
     private int playersHealth;
+    private int playerDamage;
     Random rand = new Random();
 
 // Stores Player Registerd name provided at the beginning of the game;
@@ -46,6 +47,18 @@ public class Player {
         } else {
             levelUp();
         }
+    }
+
+    //Create random amout of damage user provides without weapon
+    public int getRandomPlayerDamageWithoutWeapon() {
+        playerDamage = rand.nextInt(1, 10);
+        return playerDamage;
+    }
+
+    //Add exp from kills
+    public int addExpGivenFromKill(int expGiven) {
+        playerExp += expGiven;
+        return playerExp;
     }
 
     //Pull up Character Stats

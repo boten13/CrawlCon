@@ -215,11 +215,38 @@ private void cheatMode() {
     chooseNextCombatMessage();
 }
 
+//public void pullGobCombatDetails() {
+//    int goblinDamage = goblin.getGoblinDamage();
+//    int goblinHealth = goblin.getGoblinHealth();
+//    int goblineExpGiven = goblin.getGoblinExpGiven();
+//}
 /** The fight function has been moved here instead of under the Player class where it did not belong.
  * Will need help on parsing in intel from player class and mob class to preform combat logic here.
  */
 private void fightTheMob(){
+    int playerDamage = player.getRandomPlayerDamageWithoutWeapon();
+    goblin.playerDamagesGoblin(playerDamage);
+    boolean checkDeath = isMobDead(goblin.getGoblinHealth());
+    if (checkDeath) {
+        System.out.println("You killed " + goblin.goblinName + "!");
+        System.out.println("You monster! " + goblin.goblinName + " probably had a family! And you just killed them!");
+        System.out.println("You at least got " + goblin.getGoblinExpGiven() + " for being a murderer. I hope you are happy!");
+        player.addExpGivenFromKill(goblin.getGoblinExpGiven());
+        player.getExpRequiredForLeveling();
+        chooseNextMessage();
+    } else {
+        System.out.println("You hit " + goblin.goblinName + " for " + playerDamage + " points!");
+        System.out.println(goblin.goblinName + " now has " + goblin.getGoblinHealth() + " health points left!");
+        chooseNextCombatMessage();
+    }
+}
 
+private boolean isMobDead(int goblinHeatlh) {
+    if (goblinHeatlh < 0) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 private void endGame() {

@@ -28,7 +28,7 @@ public class Goblin {
         goblinDamage = setGoblinDamage();
         goblinExpGiven = setGoblinExpGiven();
         goblinHealth = setGoblinHealth();
-        goblinName = getRandomGoblinName();
+        goblinName = setRandomGoblinName();
     }
 
     //Test code for displaying stored values
@@ -58,12 +58,30 @@ public class Goblin {
     }
 
     //Generate random index for the name for Goblin in list
-    private String getRandomGoblinName(){
+    private String setRandomGoblinName(){
         int listSize = goblinNames.size();
         int randomIndex = rand.nextInt(0, listSize);
         return goblinNames.get(randomIndex);
     }
 
+    //Attempting to create getters
+    public int getGoblinDamage() {
+        return this.goblinDamage;
+    }
+
+    public int getGoblinHealth() {
+        return this.goblinHealth;
+    }
+
+    public int getGoblinExpGiven() {
+        return this.goblinExpGiven;
+    }
+
+    //Player damage to goblin health logic
+    public int playerDamagesGoblin(int playerDamage) {
+        goblinHealth -= playerDamage;
+        return goblinHealth;
+    }
     //Pull random name out of arraylist
 
 
