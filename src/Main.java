@@ -213,6 +213,7 @@ private void runAway() {
             + deservedDmg + " points of damage.");
     System.out.println("Which you deserved. Now fight " + goblin.goblinName + " like a true player!");
     player.goblinDoesDamage(deservedDmg);
+    player.isPlayerDead();
     chooseNextCombatMessage();
 }
 //Use an item in your inventory. Pull up inventory list.
@@ -226,6 +227,7 @@ private void talkWithCreature() {
     System.out.println(goblin.goblinName + " looks at you like you are stupid and attacks you for " +
             goblin.giveRandomGoblinDamage() + " damage.");
     System.out.println("Seriously, it is an unintelligent mob. And you are scary looking, what do you expect?");
+    player.isPlayerDead();
     chooseNextCombatMessage();
 }
 
@@ -274,6 +276,7 @@ private void fightTheMob(){
         player.goblinDoesDamage(randDmg);
         System.out.println(goblin.goblinName + " hit you for " + randDmg + " points!");
         System.out.println("Doesn't feel so good when they attack back, does it?");
+        player.isPlayerDead();
         chooseNextCombatMessage();
     }
 }

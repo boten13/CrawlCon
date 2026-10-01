@@ -79,4 +79,12 @@ public class Player {
             System.out.println("Go fight something, you plebian.");
         }
     }
+
+    //function to force the game to close when player HP reaches 0
+    public void isPlayerDead() {
+        if (playersHealth < 0) {
+            System.out.println(name + " has died. I am actually shocked because the developers made this game pretty easy.");
+            System.exit(0);
+        }
+    }
 }

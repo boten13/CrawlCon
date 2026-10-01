@@ -33,7 +33,7 @@ public class Goblin {
     //Test code for displaying stored values
     public void displayGoblin() {
         System.out.println("Name: " + goblinName);
-        System.out.println("Damage numbers: 1-3");
+        System.out.println("Damage numbers: 1-6");
         System.out.println("Exp pool: " + goblinExpGiven);
         System.out.println("Health pool: " + goblinHealth);
     }
