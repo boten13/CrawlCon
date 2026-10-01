@@ -9,6 +9,7 @@ import Util.Player;
 private final Scanner scanner = new Scanner(System.in);
 //Regular Menu Items
 private final String REG_MENU = "MENU";
+private final String LOOK_AROUND = "LOOK";
 private final String DIRECTION_NORTH = "NORTH";
 private final String DIRECTION_SOUTH = "SOUTH";
 private final String DIRECTION_EAST = "EAST";
@@ -34,8 +35,8 @@ Player player;
 
 //List of commands the player is prompted to use.
 private ArrayList<String> playerCommands = new ArrayList<>(
-        List.of(DIRECTION_EAST, DIRECTION_NORTH, DIRECTION_SOUTH, DIRECTION_WEST, MAP_CHECK, FIGHT, INVENTORY,
-                CHARACTER_SHEET, END_GAME)
+        List.of(DIRECTION_EAST, DIRECTION_NORTH, DIRECTION_SOUTH, DIRECTION_WEST, LOOK_AROUND, MAP_CHECK, FIGHT,
+                INVENTORY, CHARACTER_SHEET, END_GAME)
 );
 
 //List of commands the player is prompted to use while fighting.
@@ -107,6 +108,8 @@ private void chooseAction(String action) {
         checkInventory();
     } else if (CHARACTER_SHEET.equals(actionInAllCaps)) {
         characterSheet();
+    } else if (LOOK_AROUND.equals(actionInAllCaps)) {
+        lookAround();
     } else if (END_GAME.equals(actionInAllCaps)) {
         endGame();
     } else {
@@ -143,6 +146,17 @@ private void chooseCombatAction(String action) {
         System.out.println("Fix the code related to this word: " + action);
         chooseNextCombatMessage();
     }
+}
+
+//Function to describe what player can see.
+private void lookAround() {
+    System.out.println("You can see nothing right now, the developers haven't programmed the space in which we exist.");
+    System.out.println("I say we, because I am referring to myself as well as you.");
+    System.out.println("Currently I am just words appearing in front of you coming from the dark abyss.");
+    System.out.println("Well, I suppose even if they had created a space in which you could see, I would still just");
+    System.out.println("be a words on a page that you are reading and nothing more.");
+    System.out.println("Alright, enough of that dark rabbit hole. Point is, there is nothing to see right now.");
+    chooseNextMessage();
 }
 
 //Move Player East
