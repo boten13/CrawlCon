@@ -134,22 +134,26 @@ private void chooseCombatAction(String action) {
 
 //Move Player East
 private void headEast() {
-
+    System.out.println("You go nowhere. Currently you live in a 1 by 1 square block that does nothing.");
+    chooseNextMessage();
 }
 
 //Move Player West
 private void headWest() {
-
+    System.out.println("You go nowhere. Currently you live in a 1 by 1 square block that does nothing.");
+    chooseNextMessage();
 }
 
 //Move Player North
 private void headNorth() {
-
+    System.out.println("You go nowhere. Currently you live in a 1 by 1 square block that does nothing.");
+    chooseNextMessage();
 }
 
 //Move Player South
 private void headSouth() {
-
+    System.out.println("You go nowhere. Currently you live in a 1 by 1 square block that does nothing.");
+    chooseNextMessage();
 }
 
 //Initiate combat
@@ -171,11 +175,14 @@ private void attackCreature() {
 
 //Run From Creature. (Small chance of succeeding, failure will result in damage to player.)
 private void runAway() {
-
+    System.out.println("You weak coward. It is a pathetic mob. Take the damage you deserve.");
+    chooseNextCombatMessage();
 }
 //Use an item in your inventory. Pull up inventory list.
 private void useAnItemFromInventory() {
-
+    System.out.println("You are sitting there rummaging around your pockets as if you have anything in them.");
+    System.out.println("You don't. You just look stupid.");
+    chooseNextCombatMessage();
 }
 //Talk with Creature (Will have rare chance of having discussion with creature.)
 private void talkWithCreature() {
@@ -186,7 +193,8 @@ private void talkWithCreature() {
 
 //Check Map Location
 private void checkMap() {
-
+    System.out.println("This goes nowhere. You need to play a game by better developers if you want fun stuff.");
+    chooseNextMessage();
 }
 
 //Check Character Level
@@ -197,7 +205,8 @@ private void characterSheet() {
 
 //Check Character Inventory
 private void checkInventory() {
-
+    System.out.println("This still needs to be implemented. You have no inventory at this time. Get over it.");
+    chooseNextMessage();
 }
 
 //Cheat mode to display goblin information
