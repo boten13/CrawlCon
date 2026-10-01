@@ -213,7 +213,6 @@ private void runAway() {
             + deservedDmg + " points of damage.");
     System.out.println("Which you deserved. Now fight " + goblin.goblinName + " like a true player!");
     player.goblinDoesDamage(deservedDmg);
-    player.isPlayerDead();
     chooseNextCombatMessage();
 }
 //Use an item in your inventory. Pull up inventory list.
@@ -276,7 +275,6 @@ private void fightTheMob(){
         player.goblinDoesDamage(randDmg);
         System.out.println(goblin.goblinName + " hit you for " + randDmg + " points!");
         System.out.println("Doesn't feel so good when they attack back, does it?");
-        player.isPlayerDead();
         chooseNextCombatMessage();
     }
 }

@@ -64,6 +64,7 @@ public class Player {
     //Damage to player from goblin logic
     public int goblinDoesDamage(int goblinDamage){
         playersHealth -= goblinDamage;
+        isPlayerDead();
         return playersHealth;
     }
 
