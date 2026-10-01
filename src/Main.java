@@ -7,7 +7,8 @@ import Util.Player;
 //Generate list of actions that player can initialize.
 
 private final Scanner scanner = new Scanner(System.in);
-
+//Regular Menu Items
+private final String REG_MENU = "MENU";
 private final String DIRECTION_NORTH = "NORTH";
 private final String DIRECTION_SOUTH = "SOUTH";
 private final String DIRECTION_EAST = "EAST";
@@ -17,10 +18,14 @@ private final String FIGHT = "FIGHT";
 private final String INVENTORY = "INVENTORY";
 private final String CHARACTER_SHEET = "CHARACTER SHEET";
 private final String END_GAME = "END GAME";
+
+//Combat menu items
+private final String COMBAT_MENU = "MENU";
 private final String ATTACK_CREATURE = "ATTACK";
 private final String RUN = "RUN";
 private final String USE_ITEM = "USE ITEM";
 private final String TALK = "TALK";
+
 private final String CHEAT = "CHEAT";
 Goblin goblin = new Goblin();
 private String playerName = "";
@@ -49,6 +54,8 @@ private void showWelcomeMessage() {
     System.out.println(playerName + " is now your registered name!");
     System.out.println("Lets begin the crawl! You can use the following commands:");
     System.out.println(playerCommands);
+    System.out.println("If you ever forget what the commands are for the menu, you can simply say the word 'MENU'");
+    System.out.println("Remember that because I will not be telling you about it again.");
     chooseNextMessage();
 }
 
@@ -80,6 +87,9 @@ private void chooseAction(String action) {
         System.out.println(action + " is not a valid option. Try again.");
         chooseNextMessage();
     }
+    if (REG_MENU.equals(actionInAllCaps)) {
+        System.out.println(playerCommands);
+    }
 
     if (DIRECTION_EAST.equals(actionInAllCaps)) {
         headEast();
@@ -108,6 +118,9 @@ private void chooseAction(String action) {
 //Check input vs output on Fighting Commands list.
 private void chooseCombatAction(String action) {
     String actionInAllCaps = action.toUpperCase();
+    if (COMBAT_MENU.equals(actionInAllCaps)){
+        System.out.println(combatCommands);
+    }
     if (CHEAT.equals(actionInAllCaps)) {
         cheatMode();
     }
@@ -215,11 +228,6 @@ private void cheatMode() {
     chooseNextCombatMessage();
 }
 
-//public void pullGobCombatDetails() {
-//    int goblinDamage = goblin.getGoblinDamage();
-//    int goblinHealth = goblin.getGoblinHealth();
-//    int goblineExpGiven = goblin.getGoblinExpGiven();
-//}
 /** The fight function has been moved here instead of under the Player class where it did not belong.
  * Will need help on parsing in intel from player class and mob class to preform combat logic here.
  */
@@ -236,7 +244,9 @@ private void fightTheMob(){
         chooseNextMessage();
     } else {
         System.out.println("You hit " + goblin.goblinName + " for " + playerDamage + " points!");
-        System.out.println(goblin.goblinName + " now has " + goblin.getGoblinHealth() + " health points left!");
+        player.goblinDoesDamage(goblin.getGoblinDamage());
+        System.out.println(goblin.goblinName + " hit you for " + goblin.getGoblinDamage() + " points!");
+        System.out.println("Doesn't feel so good when they attack back, does it?");
         chooseNextCombatMessage();
     }
 }

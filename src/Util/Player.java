@@ -28,7 +28,7 @@ public class Player {
     //Checks the Player level based off exp points;
     private void levelUp() {
         playerLevel++;
-        System.out.println("You are now level" + playerLevel + "!");
+        System.out.println("You are now level " + playerLevel + "!");
     }
 
     //Checks exp needed to level;
@@ -59,6 +59,12 @@ public class Player {
     public int addExpGivenFromKill(int expGiven) {
         playerExp += expGiven;
         return playerExp;
+    }
+
+    //Damage to player from goblin logic
+    public int goblinDoesDamage(int goblinDamage){
+        playersHealth -= goblinDamage;
+        return playersHealth;
     }
 
     //Pull up Character Stats
