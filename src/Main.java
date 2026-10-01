@@ -202,7 +202,9 @@ private void attackCreature() {
 
 //Run From Creature. (Small chance of succeeding, failure will result in damage to player.)
 private void runAway() {
-    System.out.println("You weak coward. It is a pathetic mob. Take the damage you deserve.");
+    int deservedDmg = goblin.giveRandomGoblinDamage();
+    System.out.println("You weak coward. It is a pathetic mob. Take the " + deservedDmg + " damage you deserve.");
+    player.goblinDoesDamage(deservedDmg);
     chooseNextCombatMessage();
 }
 //Use an item in your inventory. Pull up inventory list.
@@ -257,16 +259,17 @@ private void fightTheMob(){
         player.getExpRequiredForLeveling();
         chooseNextMessage();
     } else {
+        int randDmg = goblin.giveRandomGoblinDamage();
         System.out.println("You hit " + goblin.goblinName + " for " + playerDamage + " points!");
-        player.goblinDoesDamage(goblin.getGoblinDamage());
-        System.out.println(goblin.goblinName + " hit you for " + goblin.getGoblinDamage() + " points!");
+        player.goblinDoesDamage(randDmg);
+        System.out.println(goblin.goblinName + " hit you for " + randDmg + " points!");
         System.out.println("Doesn't feel so good when they attack back, does it?");
         chooseNextCombatMessage();
     }
 }
 
 private boolean isMobDead(int goblinHeatlh) {
-    if (goblinHeatlh < 0) {
+    if (goblinHeatlh < 1) {
         return true;
     } else {
         return false;

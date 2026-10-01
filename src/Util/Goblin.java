@@ -25,7 +25,6 @@ public class Goblin {
 
     //Create Random Goblin stats and feed it to main for combat.
     public void createGoblinMob() {
-        goblinDamage = setGoblinDamage();
         goblinExpGiven = setGoblinExpGiven();
         goblinHealth = setGoblinHealth();
         goblinName = setRandomGoblinName();
@@ -34,7 +33,7 @@ public class Goblin {
     //Test code for displaying stored values
     public void displayGoblin() {
         System.out.println("Name: " + goblinName);
-        System.out.println("Damage numbers: " + goblinDamage);
+        System.out.println("Damage numbers: 1-3");
         System.out.println("Exp pool: " + goblinExpGiven);
         System.out.println("Health pool: " + goblinHealth);
     }
@@ -52,7 +51,7 @@ public class Goblin {
     }
 
     //Generate damage for Goblin Combat
-    private int setGoblinDamage() {
+    public int giveRandomGoblinDamage() {
         goblinDamage = rand.nextInt(1, 6);
         return goblinDamage;
     }
@@ -64,15 +63,11 @@ public class Goblin {
         return goblinNames.get(randomIndex);
     }
 
-    //Attempting to create getters
-    public int getGoblinDamage() {
-        return this.goblinDamage;
-    }
-
+    //Getter for Goblin Health
     public int getGoblinHealth() {
         return this.goblinHealth;
     }
-
+    //Getter for gobExp
     public int getGoblinExpGiven() {
         return this.goblinExpGiven;
     }
