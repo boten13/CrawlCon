@@ -73,7 +73,7 @@ public class Player {
             System.out.println("You literally just got in here, go fight something you dullard.");
         } else {
             System.out.println("You have " + playersHealth + " health points.");
-            System.out.println("You need " + neededExp + " before leveling up.");
+            System.out.println("You need " + neededExp + " experience points before leveling up.");
             System.out.println("You are currently " + playerLevel + ".");
             System.out.println("What did you expect, we are still developing the program.");
             System.out.println("Go fight something, you plebian.");

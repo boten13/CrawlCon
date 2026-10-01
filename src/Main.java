@@ -83,15 +83,17 @@ private void nameYourCharacter() {
 //Check input vs actions possible
 private void chooseAction(String action) {
     String actionInAllCaps = action.toUpperCase();
+    //If input does not exist
     if (!playerCommands.contains(actionInAllCaps)) {
         System.out.println("Please pay attention, crawler! I do not have all day to repeat myself for you.");
         System.out.println(action + " is not a valid option. Try again.");
         chooseNextMessage();
     }
+    //hidden menu item on regular menu
     if (REG_MENU.equals(actionInAllCaps)) {
         System.out.println(playerCommands);
     }
-
+    //regular menu items displayed
     if (DIRECTION_EAST.equals(actionInAllCaps)) {
         headEast();
     } else if (DIRECTION_NORTH.equals(actionInAllCaps)) {
@@ -121,19 +123,23 @@ private void chooseAction(String action) {
 //Check input vs output on Fighting Commands list.
 private void chooseCombatAction(String action) {
     String actionInAllCaps = action.toUpperCase();
+    //Hidden menu items in combat menu
     if (COMBAT_MENU.equals(actionInAllCaps)){
         System.out.println(combatCommands);
     }
     if (CHEAT.equals(actionInAllCaps)) {
         cheatMode();
     }
-
+    if (END_GAME.equals(actionInAllCaps)) {
+        endGame();
+    }
+    //if the input does not exist
     if (!combatCommands.contains(actionInAllCaps)) {
         System.out.println("Please pay attention, crawler! I do not have all day to repeat myself for you.");
         System.out.println(action + " is not a valid option. Try again.");
         chooseNextCombatMessage();
     }
-
+    //menu items for combat that is displayed
     if (ATTACK_CREATURE.equals(actionInAllCaps)) {
         attackCreature();
     } else if (RUN.equals(actionInAllCaps)) {
@@ -203,7 +209,9 @@ private void attackCreature() {
 //Run From Creature. (Small chance of succeeding, failure will result in damage to player.)
 private void runAway() {
     int deservedDmg = goblin.giveRandomGoblinDamage();
-    System.out.println("You weak coward. It is a pathetic mob. Take the " + deservedDmg + " damage you deserve.");
+    System.out.println("You weak coward. It is a pathetic mob. " + goblin.goblinName + " stabbed you in the back for "
+            + deservedDmg + " points of damage.");
+    System.out.println("Which you deserved. Now fight " + goblin.goblinName + " like a true player!");
     player.goblinDoesDamage(deservedDmg);
     chooseNextCombatMessage();
 }
@@ -215,8 +223,9 @@ private void useAnItemFromInventory() {
 }
 //Talk with Creature (Will have rare chance of having discussion with creature.)
 private void talkWithCreature() {
-    String name = goblin.goblinName;
-    System.out.println(name);
+    System.out.println(goblin.goblinName + " looks at you like you are stupid and attacks you for " +
+            goblin.giveRandomGoblinDamage() + " damage.");
+    System.out.println("Seriously, it is an unintelligent mob. And you are scary looking, what do you expect?");
     chooseNextCombatMessage();
 }
 
@@ -254,7 +263,8 @@ private void fightTheMob(){
     if (checkDeath) {
         System.out.println("You killed " + goblin.goblinName + "!");
         System.out.println("You monster! " + goblin.goblinName + " probably had a family! And you just killed them!");
-        System.out.println("You at least got " + goblin.getGoblinExpGiven() + " for being a murderer. I hope you are happy!");
+        System.out.println("You at least got " + goblin.getGoblinExpGiven() + " experience for being a murderer. " +
+                "I hope you are happy!");
         player.addExpGivenFromKill(goblin.getGoblinExpGiven());
         player.getExpRequiredForLeveling();
         chooseNextMessage();
@@ -278,4 +288,5 @@ private boolean isMobDead(int goblinHeatlh) {
 
 private void endGame() {
     System.out.println("You are weak and pathetic.");
+    System.exit(0);
 }
