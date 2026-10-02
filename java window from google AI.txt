@@ -1,0 +1,99 @@
+java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class ConsoleWindow extends JFrame {
+    private JTextArea consoleOutput;
+    private JTextField consoleInput;
+
+    public ConsoleWindow() {
+        // 1. Set up the window (JFrame)
+        setTitle("Java Command Prompt");
+        setSize(700, 450);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null); // Centers the window
+
+        // 2. Create the output area (The main terminal screen)
+        consoleOutput = new JTextArea();
+        consoleOutput.setBackground(Color.BLACK);
+        consoleOutput.setForeground(Color.GREEN); // CMD green text style
+        consoleOutput.setFont(new Font("Consolas", Font.PLAIN, 14)); // Monospace font
+        consoleOutput.setEditable(false); // Prevents users from clicking and changing text history
+        consoleOutput.setLineWrap(true);
+
+        // Put the text area inside a scroll pane so it handles overflows
+        JScrollPane scrollPane = new JScrollPane(consoleOutput);
+        scrollPane.setBorder(null);
+
+        // 3. Create the input field (Where user types commands)
+        consoleInput = new JTextField();
+        consoleInput.setBackground(Color.BLACK);
+        consoleInput.setForeground(Color.WHITE);
+        consoleInput.setCaretColor(Color.WHITE); // White blinking cursor
+        consoleInput.setFont(new Font("Consolas", Font.PLAIN, 14));
+        consoleInput.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.DARK_GRAY));
+
+        // 4. Arrange components on the layout
+        setLayout(new BorderLayout());
+        add(scrollPane, BorderLayout.CENTER);
+        add(consoleInput, BorderLayout.SOUTH);
+
+        // 5. Handle command execution when pressing 'Enter'
+        consoleInput.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String command = consoleInput.getText().trim();
+                if (!command.isEmpty()) {
+                    processCommand(command);
+                    consoleInput.setText(""); // Clear input bar after entry
+                }
+            }
+        });
+
+        // Print a welcome banner on startup
+        consoleOutput.append("Microsoft Windows Java Edition [Version 1.0]\n");
+        consoleOutput.append("(c) Custom Java Terminal Simulator. All rights reserved.\n\nC:\\Users\\JavaUser>");
+    }
+
+    // 6. Logic to handle user commands
+    private void processCommand(String command) {
+        // Echo the entered command back to the screen
+        consoleOutput.append(command + "\n");
+
+        // Basic command parser logic
+        switch (command.toLowerCase()) {
+            case "help":
+                consoleOutput.append("Available commands: help, clear, hello, exit\n");
+                break;
+            case "clear":
+            case "cls":
+                consoleOutput.setText(""); // Clears terminal text
+                break;
+            case "hello":
+                consoleOutput.append("Hello! This command prompt is written entirely in Java.\n");
+                break;
+            case "exit":
+                System.exit(0);
+                break;
+        }
+
+        // Return the command line prompt look
+        if (!command.equalsIgnoreCase("clear") && !command.equalsIgnoreCase("cls")) {
+            consoleOutput.append("\nC:\\Users\\JavaUser>");
+        } else {
+            consoleOutput.append("C:\\Users\\JavaUser>");
+        }
+        
+        // Auto-scroll to the bottom of the window
+        consoleOutput.setCaretPosition(consoleOutput.getDocument().getLength());
+    }
+
+    public static void main(String[] args) {
+        // Ensure GUI updates happen on the Event Dispatch Thread
+        SwingUtilities.invokeLater(() -> {
+            new ConsoleWindow().setVisible(true);
+        });
+    }
+}

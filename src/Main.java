@@ -1,5 +1,6 @@
 import Util.Goblin;
 import Util.Player;
+import Util.GUI;
 
 /**
  *
