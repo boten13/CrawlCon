@@ -45,6 +45,7 @@ private ArrayList<String> combatCommands = new ArrayList<>(
         List.of(ATTACK_CREATURE, RUN, USE_ITEM, TALK)
 );
 void main() {
+    GUI gameDisplayWindow = new GUI();
     showWelcomeMessage();
 }
 
