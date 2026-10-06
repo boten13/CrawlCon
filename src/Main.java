@@ -2,6 +2,12 @@ import Util.Goblin;
 import Util.Player;
 import Util.GUI;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
 /**
  *
  */
@@ -32,6 +38,15 @@ private final String CHEAT = "CHEAT";
 Goblin goblin = new Goblin();
 private String playerName = "";
 Player player;
+
+String userCommand = "";
+
+JTextArea outputConsoleResponse;
+JTextField inputUserCommand;
+
+//will use this to navigate the operational lists.
+public int i = 0;
+
 //private final String CHECK_TIME = "CLOCK";
 
 //List of commands the player is prompted to use.
@@ -45,21 +60,77 @@ private ArrayList<String> combatCommands = new ArrayList<>(
         List.of(ATTACK_CREATURE, RUN, USE_ITEM, TALK)
 );
 void main() {
+    //Initiate GUI display
     GUI gameDisplayWindow = new GUI();
+    JDialog dialog = new JDialog();
+    //Code for the console output into the GUI display
+    outputConsoleResponse = new JTextArea();
+    outputConsoleResponse = new JTextArea();
+    outputConsoleResponse.setBackground(Color.BLACK);
+    outputConsoleResponse.setForeground(Color.GREEN);
+    outputConsoleResponse.setFont(new Font("Consolas", Font.PLAIN, 25));
+    outputConsoleResponse.setEditable(false);
+    outputConsoleResponse.setLineWrap(true);
+    //Allows for scrolling on previous output
+    JScrollPane scrollPane = new JScrollPane(outputConsoleResponse);
+    scrollPane.setBorder(null);
+    //Code for the user to input commands into the GUI display
+    inputUserCommand = new JTextField();
+    inputUserCommand.setBackground(Color.BLACK);
+    inputUserCommand.setForeground(Color.WHITE);
+    inputUserCommand.setCaretColor(Color.WHITE);
+    inputUserCommand.setFont(new Font("Consolas", Font.PLAIN, 25));
+    inputUserCommand.setBorder(BorderFactory.createMatteBorder(3, 0, 0, 0, Color.DARK_GRAY));
+
+    //Sets the layout for everything
+    gameDisplayWindow.setLayout(new BorderLayout());
+    //Sets the scroller to the middle section of the layout
+    gameDisplayWindow.add(scrollPane, BorderLayout.CENTER);
+    //adds user input box to the bottom of the display
+    gameDisplayWindow.add(inputUserCommand, BorderLayout.SOUTH);
+    //Activates the new window
+    gameDisplayWindow.setVisible(true);
+
+    inputUserCommand.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            userCommand = inputUserCommand.getText();
+            while (i < 1) {
+                nameYourCharacter();
+                playerName = userCommand;
+                i++;
+                secondWelcomeMessage();
+            } while (i == 1){
+                chooseAction(userCommand);
+            } while (i == 2){
+
+            }
+            if (!userCommand.isEmpty()) {
+                inputUserCommand.setText("");
+            }
+        }
+    });
     showWelcomeMessage();
 }
 
 //Welcome Message from the AI
 private void showWelcomeMessage() {
-    System.out.println("Welcome Crawler to Terran's Dungeon Crawl!");
-    System.out.println("Please enter your registered crawler name for your time inside the crawl!");
-    nameYourCharacter();
-    System.out.println(playerName + " is now your registered name!");
-    System.out.println("Lets begin the crawl! You can use the following commands:");
-    System.out.println(playerCommands);
-    System.out.println("If you ever forget what the commands are for the menu, you can simply say the word 'MENU'");
-    System.out.println("Remember that because I will not be telling you about it again.");
-    chooseNextMessage();
+    outputConsoleResponse.append("\nSyS: Welcome Crawler to Terran's Dungeon Crawl!");
+    outputConsoleResponse.append("\nSyS: Please enter your registered crawler name for your time inside the crawl!");
+//    nameYourCharacter();
+//    outputConsoleResponse.append("\nSyS: " + playerName + " is now your registered name!");
+//    outputConsoleResponse.append("\nSyS: Lets begin the crawl! You can use the following commands:\n");
+//    outputConsoleResponse.append(playerCommands.toString());
+//    outputConsoleResponse.append("\nSyS: If you ever forget what the commands are for the menu, you can simply say the word 'MENU'");
+//    outputConsoleResponse.append("\nSyS: Remember that because I will not be telling you about it again.");
+//    chooseNextMessage();
+}
+private void secondWelcomeMessage() {
+    outputConsoleResponse.append("\nSyS: " + playerName + " is now your registered name!");
+    outputConsoleResponse.append("\nSyS: Lets begin the crawl! You can use the following commands:\n");
+    outputConsoleResponse.append(playerCommands.toString());
+    outputConsoleResponse.append("\nSyS: If you ever forget what the commands are for the menu, you can simply say the word 'MENU'");
+    outputConsoleResponse.append("\nSyS: Remember that because I will not be telling you about it again.");
 }
 
 //So I do not have to type this again everytime an action is preformed.
@@ -78,7 +149,7 @@ private void chooseNextCombatMessage() {
 
 //Register Player name
 private void nameYourCharacter() {
-    playerName = scanner.nextLine();
+    playerName = userCommand;
     player = new Player(playerName);
 }
 
@@ -107,6 +178,7 @@ private void chooseAction(String action) {
     } else if (MAP_CHECK.equals(actionInAllCaps)) {
         checkMap();
     } else if (FIGHT.equals(actionInAllCaps)) {
+        i++;
         startCombat();
     } else if (INVENTORY.equals(actionInAllCaps)) {
         checkInventory();
@@ -194,8 +266,8 @@ private void headSouth() {
 //Initiate combat
 private void startCombat() {
     goblin.createGoblinMob();
-    System.out.println("You have initiated combat with a creature. Choose your next action.");
-    System.out.println(combatCommands);
+    outputConsoleResponse.append("\nYou have initiated combat with a creature. Choose your next action.");
+    outputConsoleResponse.append(combatCommands.toString());
     String choosenCombatAction = scanner.nextLine();
     chooseCombatAction(choosenCombatAction);
     chooseNextCombatMessage();
@@ -270,6 +342,7 @@ private void fightTheMob(){
                 "I hope you are happy!");
         player.addExpGivenFromKill(goblin.getGoblinExpGiven());
         player.getExpRequiredForLeveling();
+        i--;
         chooseNextMessage();
     } else {
         int randDmg = goblin.giveRandomGoblinDamage();
