@@ -44,8 +44,6 @@ String userCommand = "";
 JTextArea outputConsoleResponse;
 JTextField inputUserCommand;
 
-//will use this to navigate the operational lists.
-public int i = 0;
 
 //private final String CHECK_TIME = "CLOCK";
 
@@ -95,18 +93,8 @@ void main() {
         @Override
         public void actionPerformed(ActionEvent e) {
             userCommand = inputUserCommand.getText();
-            while (i < 1) {
-                nameYourCharacter();
-                playerName = userCommand;
-                i++;
-                secondWelcomeMessage();
-            } while (i == 1){
-                chooseAction(userCommand);
-            } while (i == 2){
-
-            }
             if (!userCommand.isEmpty()) {
-                inputUserCommand.setText("");
+            inputUserCommand.setText("");
             }
         }
     });
@@ -117,13 +105,13 @@ void main() {
 private void showWelcomeMessage() {
     outputConsoleResponse.append("\nSyS: Welcome Crawler to Terran's Dungeon Crawl!");
     outputConsoleResponse.append("\nSyS: Please enter your registered crawler name for your time inside the crawl!");
-//    nameYourCharacter();
-//    outputConsoleResponse.append("\nSyS: " + playerName + " is now your registered name!");
-//    outputConsoleResponse.append("\nSyS: Lets begin the crawl! You can use the following commands:\n");
-//    outputConsoleResponse.append(playerCommands.toString());
-//    outputConsoleResponse.append("\nSyS: If you ever forget what the commands are for the menu, you can simply say the word 'MENU'");
-//    outputConsoleResponse.append("\nSyS: Remember that because I will not be telling you about it again.");
-//    chooseNextMessage();
+    nameYourCharacter();
+    outputConsoleResponse.append("\nSyS: " + playerName + " is now your registered name!");
+    outputConsoleResponse.append("\nSyS: Lets begin the crawl! You can use the following commands:\n");
+    outputConsoleResponse.append(playerCommands.toString());
+    outputConsoleResponse.append("\nSyS: If you ever forget what the commands are for the menu, you can simply say the word 'MENU'");
+    outputConsoleResponse.append("\nSyS: Remember that because I will not be telling you about it again.");
+    chooseNextMessage();
 }
 private void secondWelcomeMessage() {
     outputConsoleResponse.append("\nSyS: " + playerName + " is now your registered name!");
@@ -178,7 +166,6 @@ private void chooseAction(String action) {
     } else if (MAP_CHECK.equals(actionInAllCaps)) {
         checkMap();
     } else if (FIGHT.equals(actionInAllCaps)) {
-        i++;
         startCombat();
     } else if (INVENTORY.equals(actionInAllCaps)) {
         checkInventory();
@@ -342,7 +329,6 @@ private void fightTheMob(){
                 "I hope you are happy!");
         player.addExpGivenFromKill(goblin.getGoblinExpGiven());
         player.getExpRequiredForLeveling();
-        i--;
         chooseNextMessage();
     } else {
         int randDmg = goblin.giveRandomGoblinDamage();
