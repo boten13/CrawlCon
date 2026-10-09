@@ -231,7 +231,7 @@ private void processInput(String userCommand){
             if (!actualCombatOptions.contains(userCommand.toUpperCase())) {
                 cText("Please pay attention, crawler! I do not have all day to repeat myself for you.");
                 cText(userCommand + " is not a valid option. Try again.");
-                gameState = 2;
+                gameState = 3;
             }
             //menu items for combat that is displayed
             if (ATTACK_CREATURE.equalsIgnoreCase(userCommand)) {
