@@ -218,7 +218,7 @@ private void processInput(String userCommand){
             //Hidden menu items in combat menu
             if (COMBAT_MENU.equalsIgnoreCase(userCommand)){
                 cText(combatCommands.toString());
-                gameState = 3;
+                gameState = 2;
             }
             if (CHEAT.equalsIgnoreCase(userCommand)) {
                 cheatMode();
