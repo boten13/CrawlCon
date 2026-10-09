@@ -257,12 +257,12 @@ private void cText(String text) {
 
 //Function to describe what player can see.
 private void lookAround() {
-    cText("You can see nothing right now, the developers haven't programmed the space in which we exist.");
-    cText("I say we, because I am referring to myself as well as you.");
-    cText("Currently I am just words appearing in front of you coming from the dark abyss.");
-    cText("Well, I suppose even if they had created a space in which you could see, I would still just");
-    cText("be a words on a page that you are reading and nothing more.");
-    cText("Alright, enough of that dark rabbit hole. Point is, there is nothing to see right now.");
+    cText("You can see nothing right now, the developers haven't programmed the space in which we exist. " +
+            "I say we, because I am referring to myself as well as you. " +
+            "Currently I am just words appearing in front of you coming from the dark abyss. " +
+            "Well, I suppose even if they had created a space in which you could see, I would still just " +
+            "be a words on a page that you are reading and nothing more. " +
+            "Alright, enough of that dark rabbit hole. Point is, there is nothing to see right now.");
     gameState = 1;
 }
 
