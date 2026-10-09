@@ -1,18 +1,16 @@
+//All the imported packages
 import Util.Goblin;
 import Util.Player;
 import Util.GUI;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
 /**
  *
  */
 //Generate list of actions that player can initialize.
-
 private final Scanner scanner = new Scanner(System.in);
 //Regular Menu Items
 private final String REG_MENU = "MENU";
@@ -33,13 +31,18 @@ private final String ATTACK_CREATURE = "ATTACK";
 private final String RUN = "RUN";
 private final String USE_ITEM = "USE ITEM";
 private final String TALK = "TALK";
-
 private final String CHEAT = "CHEAT";
+
+//Generate goblin Object
 Goblin goblin = new Goblin();
+
 private String playerName = "";
 Player player;
 
 String userCommand = "";
+
+//Used for the switch:case
+private int gameState = 0;
 
 JTextArea outputConsoleResponse;
 JTextField inputUserCommand;
@@ -48,7 +51,7 @@ JTextField inputUserCommand;
 //private final String CHECK_TIME = "CLOCK";
 
 //List of commands the player is prompted to use.
-private ArrayList<String> playerCommands = new ArrayList<>(
+private ArrayList<String> userCommands = new ArrayList<>(
         List.of(DIRECTION_EAST, DIRECTION_NORTH, DIRECTION_SOUTH, DIRECTION_WEST, LOOK_AROUND, MAP_CHECK, FIGHT,
                 INVENTORY, CHARACTER_SHEET, END_GAME)
 );
@@ -58,57 +61,83 @@ private ArrayList<String> combatCommands = new ArrayList<>(
         List.of(ATTACK_CREATURE, RUN, USE_ITEM, TALK)
 );
 void main() {
-    //Initiate GUI display
-    GUI gameDisplayWindow = new GUI();
-    JDialog dialog = new JDialog();
-    //Code for the console output into the GUI display
-    outputConsoleResponse = new JTextArea();
-    outputConsoleResponse = new JTextArea();
-    outputConsoleResponse.setBackground(Color.BLACK);
-    outputConsoleResponse.setForeground(Color.GREEN);
-    outputConsoleResponse.setFont(new Font("Consolas", Font.PLAIN, 25));
-    outputConsoleResponse.setEditable(false);
-    outputConsoleResponse.setLineWrap(true);
-    //Allows for scrolling on previous output
-    JScrollPane scrollPane = new JScrollPane(outputConsoleResponse);
-    scrollPane.setBorder(null);
-    //Code for the user to input commands into the GUI display
-    inputUserCommand = new JTextField();
-    inputUserCommand.setBackground(Color.BLACK);
-    inputUserCommand.setForeground(Color.WHITE);
-    inputUserCommand.setCaretColor(Color.WHITE);
-    inputUserCommand.setFont(new Font("Consolas", Font.PLAIN, 25));
-    inputUserCommand.setBorder(BorderFactory.createMatteBorder(3, 0, 0, 0, Color.DARK_GRAY));
-
-    //Sets the layout for everything
-    gameDisplayWindow.setLayout(new BorderLayout());
-    //Sets the scroller to the middle section of the layout
-    gameDisplayWindow.add(scrollPane, BorderLayout.CENTER);
-    //adds user input box to the bottom of the display
-    gameDisplayWindow.add(inputUserCommand, BorderLayout.SOUTH);
-    //Activates the new window
-    gameDisplayWindow.setVisible(true);
-
-    inputUserCommand.addActionListener(new ActionListener() {
+    SwingUtilities.invokeLater(new Runnable() {
         @Override
-        public void actionPerformed(ActionEvent e) {
-            userCommand = inputUserCommand.getText();
-            if (!userCommand.isEmpty()) {
-            inputUserCommand.setText("");
+        public void run() {
+        //Initiate GUI display
+        GUI gameDisplayWindow = new GUI();
+        JDialog dialog = new JDialog();
+        //Code for the console output into the GUI display
+        outputConsoleResponse = new JTextArea();
+        outputConsoleResponse.setBackground(Color.BLACK);
+        outputConsoleResponse.setForeground(Color.GREEN);
+        outputConsoleResponse.setFont(new Font("Consolas", Font.PLAIN, 17));
+        outputConsoleResponse.setEditable(false);
+        outputConsoleResponse.setLineWrap(true);
+        outputConsoleResponse.setWrapStyleWord(true);
+        //Allows for scrolling on previous output
+        JScrollPane scrollPane = new JScrollPane(outputConsoleResponse);
+        scrollPane.setBorder(null);
+        //Code for the user to input commands into the GUI display
+        inputUserCommand = new JTextField();
+        inputUserCommand.setBackground(Color.BLACK);
+        inputUserCommand.setForeground(Color.GREEN);
+        inputUserCommand.setCaretColor(Color.WHITE);
+        inputUserCommand.setFont(new Font("Consolas", Font.PLAIN, 17));
+        inputUserCommand.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.DARK_GRAY));
+
+        //Sets the layout for everything
+        gameDisplayWindow.setLayout(new BorderLayout());
+        //Sets the scroller to the middle section of the layout
+        gameDisplayWindow.add(scrollPane, BorderLayout.CENTER);
+        //adds user input box to the bottom of the display
+        gameDisplayWindow.add(inputUserCommand, BorderLayout.SOUTH);
+        //Activates the new window
+        gameDisplayWindow.setVisible(true);
+        inputUserCommand.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                userCommand = inputUserCommand.getText();
+                if (!userCommand.isEmpty()) {
+                    processInput(userCommand);
+                inputUserCommand.setText("");
+                }
             }
+        });
+        //Start game by prompting for name
+        cText("\nSyS: Welcome Crawler to Terran's Dungeon Crawl!");
+        cText("\nSyS: Please enter your registered crawler name for your time inside the crawl!\n>");
         }
     });
-    showWelcomeMessage();
 }
 
+//Process User Input
+private void processInput(String userCommand){
+    //Display what user prompted
+    cText(userCommand + "\n");
+
+    switch (gameState) {
+        case 0:
+            playerName = userCommand;
+            gameState = 1;
+            cText("SyS: " + playerName + " is now your registered name!\n" +
+                    "Sys: Let's begin your practice crawl.\n" + userCommands.toString() +
+                    "\nSyS: If you ever forget what the commands are for the menu, you can simply say the word 'MENU'" +
+                    "\nSyS: Remember that because I will not be telling you about it again.\n>");
+            break;
+
+        case 1:
+            chooseAction(userCommand);
+    }
+}
+
+//Converts Strings to output on GameDisplay -- ShortHanded for ConvertText
+private void cText(String text) {
+    outputConsoleResponse.append(text);
+    outputConsoleResponse.setCaretPosition(outputConsoleResponse.getDocument().getLength());
+}
 //Welcome Message from the AI
 private void showWelcomeMessage() {
-    outputConsoleResponse.append("\nSyS: Welcome Crawler to Terran's Dungeon Crawl!");
-    outputConsoleResponse.append("\nSyS: Please enter your registered crawler name for your time inside the crawl!");
-    nameYourCharacter();
-    outputConsoleResponse.append("\nSyS: " + playerName + " is now your registered name!");
-    outputConsoleResponse.append("\nSyS: Lets begin the crawl! You can use the following commands:\n");
-    outputConsoleResponse.append(playerCommands.toString());
     outputConsoleResponse.append("\nSyS: If you ever forget what the commands are for the menu, you can simply say the word 'MENU'");
     outputConsoleResponse.append("\nSyS: Remember that because I will not be telling you about it again.");
     chooseNextMessage();
@@ -116,7 +145,7 @@ private void showWelcomeMessage() {
 private void secondWelcomeMessage() {
     outputConsoleResponse.append("\nSyS: " + playerName + " is now your registered name!");
     outputConsoleResponse.append("\nSyS: Lets begin the crawl! You can use the following commands:\n");
-    outputConsoleResponse.append(playerCommands.toString());
+    outputConsoleResponse.append(userCommands.toString());
     outputConsoleResponse.append("\nSyS: If you ever forget what the commands are for the menu, you can simply say the word 'MENU'");
     outputConsoleResponse.append("\nSyS: Remember that because I will not be telling you about it again.");
 }
@@ -135,24 +164,18 @@ private void chooseNextCombatMessage() {
     chooseCombatAction(userInput);
 }
 
-//Register Player name
-private void nameYourCharacter() {
-    playerName = userCommand;
-    player = new Player(playerName);
-}
 
 //Check input vs actions possible
 private void chooseAction(String action) {
     String actionInAllCaps = action.toUpperCase();
     //If input does not exist
-    if (!playerCommands.contains(actionInAllCaps)) {
-        System.out.println("Please pay attention, crawler! I do not have all day to repeat myself for you.");
-        System.out.println(action + " is not a valid option. Try again.");
-        chooseNextMessage();
+    if (!userCommands.contains(actionInAllCaps)) {
+        cText("\n SyS: Please pay attention, crawler! I do not have all day to repeat myself for you.\n");
+        cText(action + " is not a valid option. Try again.\n>");
     }
     //hidden menu item on regular menu
     if (REG_MENU.equals(actionInAllCaps)) {
-        System.out.println(playerCommands);
+        System.out.println(userCommands);
     }
     //regular menu items displayed
     if (DIRECTION_EAST.equals(actionInAllCaps)) {
