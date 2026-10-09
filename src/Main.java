@@ -309,6 +309,7 @@ private void runAway() {
             + deservedDmg + " points of damage.");
     cText("Which you deserved. Now fight " + goblin.goblinName + " like a true player!");
     player.goblinDoesDamage(deservedDmg);
+    isPlayerDead();
     gameState = 3;
 }
 //Use an item in your inventory. Pull up inventory list.
@@ -386,9 +387,11 @@ private void fightTheMob(){
     }
 }
 
-//Checks Player HP
+//Checks if player has died, displays pop up window if yes
 public void isPlayerDead() {
     if (player.getPlayersHealth() < 0) {
+        JOptionPane.showMessageDialog(null, "You have died");
+        System.exit(0);
         cText(playerName + " has died. I am actually shocked because the developers made this game pretty easy.");
     }
 }
