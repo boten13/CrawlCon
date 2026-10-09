@@ -148,8 +148,8 @@ private void processInput(String userCommand){
             }
             //Validates user input against all options available
             if (!actualMenu.contains(userCommand.toUpperCase())) {
-                cText("SyS: Please pay attention, crawler! I do not have all day to repeat myself for you.\n>");
-                cText(userCommand + " is not a valid option. Try again.\n>");
+                cText("SyS: Please pay attention, crawler! I do not have all day to repeat myself for you.");
+                cText(userCommand + " is not a valid option. Try again.");
                 gameState = 1;
             }
             //regular menu items displayed
