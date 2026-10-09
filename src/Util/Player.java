@@ -28,7 +28,6 @@ public class Player {
     //Checks the Player level based off exp points;
     private void levelUp() {
         playerLevel++;
-        System.out.println("You are now level " + playerLevel + "!");
     }
 
     //Checks exp needed to level;
@@ -49,7 +48,7 @@ public class Player {
         }
     }
 
-    //Create random amout of damage user provides without weapon
+    //Create random amount of damage user provides without weapon
     public int getRandomPlayerDamageWithoutWeapon() {
         playerDamage = rand.nextInt(1, 10);
         return playerDamage;
@@ -64,28 +63,21 @@ public class Player {
     //Damage to player from goblin logic
     public int goblinDoesDamage(int goblinDamage){
         playersHealth -= goblinDamage;
-        isPlayerDead();
         return playersHealth;
     }
 
-    //Pull up Character Stats
-    public void checkCharacterSheet() {
-        if (playerExp == 0) {
-            System.out.println("You literally just got in here, go fight something you dullard.");
-        } else {
-            System.out.println("You have " + playersHealth + " health points.");
-            System.out.println("You need " + neededExp + " experience points before leveling up.");
-            System.out.println("You are currently " + playerLevel + ".");
-            System.out.println("What did you expect, we are still developing the program.");
-            System.out.println("Go fight something, you plebian.");
-        }
-    }
 
-    //function to force the game to close when player HP reaches 0
-    public void isPlayerDead() {
-        if (playersHealth < 0) {
-            System.out.println(name + " has died. I am actually shocked because the developers made this game pretty easy.");
-            System.exit(0);
-        }
+    //Getters for the players information
+    public int getPlayerLevel() {
+        return playerLevel;
+    }
+    public int getPlayersHealth() {
+        return playersHealth;
+    }
+    public int getPlayerExp() {
+        return playerExp;
+    }
+    public int getNeededExp() {
+        return neededExp;
     }
 }

@@ -30,14 +30,6 @@ public class Goblin {
         goblinName = setRandomGoblinName();
     }
 
-    //Test code for displaying stored values
-    public void displayGoblin() {
-        System.out.println("Name: " + goblinName);
-        System.out.println("Damage numbers: 1-6");
-        System.out.println("Exp pool: " + goblinExpGiven);
-        System.out.println("Health pool: " + goblinHealth);
-    }
-
     //Create random amount of exp given for killing mob.
     private int setGoblinExpGiven() {
         goblinExpGiven = rand.nextInt(37, 55);
@@ -77,7 +69,4 @@ public class Goblin {
         goblinHealth -= playerDamage;
         return goblinHealth;
     }
-    //Pull random name out of arraylist
-
-
 }
