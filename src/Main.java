@@ -116,6 +116,7 @@ void main() {
                 }
             }
         });
+        inputUserCommand.grabFocus();
         //Start game by prompting for name
         cText("SyS: Welcome Crawler to Terran's Dungeon Crawl!");
         cText("SyS: Please enter your registered crawler name for your time inside the crawl!");
@@ -320,9 +321,11 @@ private void useAnItemFromInventory() {
 }
 //Talk with Creature (Will have rare chance of having discussion with creature.)
 private void talkWithCreature() {
+    int deservedDmg = goblin.giveRandomGoblinDamage();
     cText(goblin.goblinName + " looks at you like you are stupid and attacks you for " +
-            goblin.giveRandomGoblinDamage() + " damage.");
+            deservedDmg + " damage.");
     cText("Seriously, it is an unintelligent mob. And you are scary looking, what do you expect?");
+    player.goblinDoesDamage(deservedDmg);
     isPlayerDead();
     gameState = 3;
 }
