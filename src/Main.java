@@ -2,6 +2,7 @@
 import Util.Goblin;
 import Util.Player;
 import Util.GUI;
+// TODO: Star imports are bad
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -52,6 +53,7 @@ JTextField inputUserCommand;
 
 //private final String CHECK_TIME = "CLOCK";
 
+// TODO: Cleanup these dupe lists
 //List of commands the player is prompted to use.
 private ArrayList<String> playerCommands = new ArrayList<>(
         List.of(DIRECTION_EAST, DIRECTION_NORTH, DIRECTION_SOUTH, DIRECTION_WEST, LOOK_AROUND, MAP_CHECK, FIGHT,
@@ -71,6 +73,9 @@ private ArrayList<String> combatCommands = new ArrayList<>(
 private ArrayList<String> actualCombatOptions = new ArrayList<>(
         List.of(ATTACK_CREATURE, RUN, USE_ITEM, TALK, CHEAT)
 );
+
+// TODO: Add an actual game icon in top left of GUI instead of default image
+// TODO: Cleanup project structure--Everything is currently in Util dir
 void main() {
     //Initiates EDT for SWING
     SwingUtilities.invokeLater(new Runnable() {
@@ -129,6 +134,7 @@ private void processInput(String userCommand){
     //Display what user prompted
     cText("\n>" + userCommand + "\n");
 
+    // TODO: Use enum
     switch (gameState) {
         case 0:
             //Stores user input as name for the player
@@ -215,6 +221,7 @@ private void processInput(String userCommand){
                 cText("Fix the code related to this word: " + userCommand);
             }
             break;
+        // TODO: This is mostly a dupe of case 2, minus the messages
         case 3: //Combat continue case
             //Hidden menu items in combat menu
             if (COMBAT_MENU.equalsIgnoreCase(userCommand)){
