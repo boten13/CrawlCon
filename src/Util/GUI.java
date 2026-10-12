@@ -1,11 +1,13 @@
 package Util;
 import javax.swing.*;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.*;
+
 
 public class GUI extends JFrame {
     public GUI() {
-        this.setTitle("Dungeon Crawler Terran V1"); //Sets frame title
+        this.setTitle("Dungeon Crawler Terran V1");//Sets frame title
+        ImageIcon icon = new ImageIcon("Resource/Images/Brain.png");//Locates image in files
+        this.setIconImage(icon.getImage());//Sets Imageicon to chosen image
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Exits out of the application, but default HIDESONCLOSE
         this.setResizable(false); //Prevents frame from being resized
         this.setVisible(true);//Makes the frame visible
