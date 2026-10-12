@@ -1,4 +1,5 @@
 //All the imported packages
+import Util.GameState;
 import Util.Goblin;
 import Util.Player;
 import Util.GUI;
@@ -8,11 +9,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-/**
- *
- */
-//Generate list of actions that player can initialize.
-private final Scanner scanner = new Scanner(System.in);
 //Regular Menu Items
 private final String REG_MENU = "MENU";
 private final String LOOK_AROUND = "LOOK";
@@ -25,7 +21,6 @@ private final String FIGHT = "FIGHT";
 private final String INVENTORY = "INVENTORY";
 private final String CHARACTER_SHEET = "CHARACTER SHEET";
 private final String END_GAME = "END GAME";
-
 //Combat menu items
 private final String COMBAT_MENU = "MENU";
 private final String ATTACK_CREATURE = "ATTACK";
@@ -45,15 +40,13 @@ Player player = new Player(playerName);
 String userCommand = "";
 
 //Used for the switch:case
-private int gameState = 0;
+private GameState gameState = GameState.WELCOME;
 
 JTextArea outputConsoleResponse;
 JTextField inputUserCommand;
 
-
 //private final String CHECK_TIME = "CLOCK";
 
-// TODO: Cleanup these dupe lists
 //List of commands the player is prompted to use.
 private ArrayList<String> playerCommands = new ArrayList<>(
         List.of(DIRECTION_EAST, DIRECTION_NORTH, DIRECTION_SOUTH, DIRECTION_WEST, LOOK_AROUND, MAP_CHECK, FIGHT,
@@ -136,28 +129,28 @@ private void processInput(String userCommand){
 
     // TODO: Use enum
     switch (gameState) {
-        case 0:
+        case GameState.WELCOME:
             //Stores user input as name for the player
             playerName = userCommand;
             //Moves case to 1
-            gameState = 1;
+            gameState = GameState.REG_MENU;
             cText("SyS: " + playerName + " is now your registered name!\n" +
                     "Sys: Let's begin your practice crawl.\n" + playerCommands.toString() +
                     "\nSyS: If you ever forget what the commands are for the menu, you can simply say the word 'MENU'" +
                     "\nSyS: Remember that because I will not be telling you about it again.\n");
             break;
 
-        case 1: //Reg options case
+        case GameState.REG_MENU: //Reg options case
             //Cheat Word Menu to display the menu again
             if (REG_MENU.equalsIgnoreCase(userCommand)) {
                 cText(playerCommands.toString());
-                gameState = 1;
+                gameState = GameState.REG_MENU;
             }
             //Validates user input against all options available
             if (!actualMenu.contains(userCommand.toUpperCase())) {
                 cText("SyS: Please pay attention, crawler! I do not have all day to repeat myself for you.");
                 cText(userCommand + " is not a valid option. Try again.");
-                gameState = 1;
+                gameState = GameState.REG_MENU;
             }
             //regular menu items displayed
             if (DIRECTION_EAST.equalsIgnoreCase(userCommand)) {
@@ -185,19 +178,19 @@ private void processInput(String userCommand){
             }
             cText("SyS: What would you like to do next, " + playerName + "?");
             break;
-        case 2://Combat start case
-                cText("SyS: You have initiated combat with " + goblin.goblinName + ".");
-                cText("SyS: This is your combat menu options.");
-                cText(combatCommands.toString());
+        case GameState.COMBAT://Combat start case
+//                cText("SyS: You have initiated combat with " + goblin.goblinName + ".");
+//                cText("SyS: This is your combat menu options.");
+//                cText(combatCommands.toString());
 
             //Hidden menu items in combat menu
             if (COMBAT_MENU.equalsIgnoreCase(userCommand)){
                 cText(combatCommands.toString());
-                gameState = 2;
+                gameState = GameState.COMBAT;
             }
             if (CHEAT.equalsIgnoreCase(userCommand)) {
                 cheatMode();
-                gameState = 2;
+                gameState = GameState.COMBAT;
             }
             if (END_GAME.equalsIgnoreCase(userCommand)) {
                 endGame();
@@ -206,40 +199,6 @@ private void processInput(String userCommand){
             if (!actualCombatOptions.contains(userCommand.toUpperCase())) {
                 cText("Please pay attention, crawler! I do not have all day to repeat myself for you.");
                 cText(userCommand + " is not a valid option. Try again.");
-                gameState = 3;
-            }
-            //menu items for combat that is displayed
-            if (ATTACK_CREATURE.equalsIgnoreCase(userCommand)) {
-                attackCreature();
-            } else if (RUN.equalsIgnoreCase(userCommand)) {
-                runAway();
-            } else if (USE_ITEM.equalsIgnoreCase(userCommand)) {
-                useAnItemFromInventory();
-            } else if (TALK.equalsIgnoreCase(userCommand)) {
-                talkWithCreature();
-            } else {
-                cText("Fix the code related to this word: " + userCommand);
-            }
-            break;
-        // TODO: This is mostly a dupe of case 2, minus the messages
-        case 3: //Combat continue case
-            //Hidden menu items in combat menu
-            if (COMBAT_MENU.equalsIgnoreCase(userCommand)){
-                cText(combatCommands.toString());
-                gameState = 2;
-            }
-            if (CHEAT.equalsIgnoreCase(userCommand)) {
-                cheatMode();
-                gameState = 3;
-            }
-            if (END_GAME.equalsIgnoreCase(userCommand)) {
-                endGame();
-            }
-            //if the input does not exist
-            if (!actualCombatOptions.contains(userCommand.toUpperCase())) {
-                cText("Please pay attention, crawler! I do not have all day to repeat myself for you.");
-                cText(userCommand + " is not a valid option. Try again.");
-                gameState = 3;
             }
             //menu items for combat that is displayed
             if (ATTACK_CREATURE.equalsIgnoreCase(userCommand)) {
@@ -271,7 +230,6 @@ private void lookAround() {
             "Well, I suppose even if they had created a space in which you could see, I would still just " +
             "be a words on a page that you are reading and nothing more. " +
             "Alright, enough of that dark rabbit hole. Point is, there is nothing to see right now.");
-    gameState = 1;
 }
 
 //Move Player East
@@ -286,8 +244,7 @@ private void headWest() {
 
 //Move Player North
 private void headNorth() {
-    cText("SyS: You go nowhere. Currently you live in a 1 by 1 square block that does nothing.\n>");
-    gameState = 1;
+    cText("SyS: You go nowhere. Currently you live in a 1 by 1 square block that does nothing.");
 }
 
 //Move Player South
@@ -301,7 +258,7 @@ private void startCombat() {
     cText("You have initiated combat with " + goblin.goblinName+ ".");
     cText("Here are your combat options: ");
     cText(combatCommands.toString());
-    gameState = 3;
+    gameState = GameState.COMBAT;
 }
 
 //Attack Creature
@@ -318,13 +275,11 @@ private void runAway() {
     cText("Which you deserved. Now fight " + goblin.goblinName + " like a true player!");
     player.goblinDoesDamage(deservedDmg);
     isPlayerDead();
-    gameState = 3;
 }
 //Use an item in your inventory. Pull up inventory list.
 private void useAnItemFromInventory() {
     cText("You are sitting there rummaging around your pockets as if you have anything in them.");
     cText("You don't. You just look stupid.");
-    gameState = 3;
 }
 //Talk with Creature (Will have rare chance of having discussion with creature.)
 private void talkWithCreature() {
@@ -334,13 +289,11 @@ private void talkWithCreature() {
     cText("Seriously, it is an unintelligent mob. And you are scary looking, what do you expect?");
     player.goblinDoesDamage(deservedDmg);
     isPlayerDead();
-    gameState = 3;
 }
 
 //Check Map Location
 private void checkMap() {
     cText("This goes nowhere. You need to play a game by better developers if you want fun stuff.");
-   gameState = 1;
 }
 
 //Check Character Level
@@ -353,14 +306,12 @@ private void characterSheet() {
         cText("You are currently level " + player.getPlayerLevel() + ".");
         cText("What did you expect, we are still developing the program.");
         cText("Go fight something, you plebian.");
-        gameState = 1;
     }
 }
 
 //Check Character Inventory
 private void checkInventory() {
     cText("This still needs to be implemented. You have no inventory at this time. Get over it.");
-    gameState = 1;
 }
 
 //Cheat mode to display goblin information
@@ -368,7 +319,6 @@ private void cheatMode() {
     cText("Name: " + goblin.goblinName);
     cText("Exp pool: " + goblin.getGoblinExpGiven());
     cText("Health pool: " + goblin.getGoblinHealth());
-    gameState = 3;
 }
 
 /** The fight function has been moved here instead of under the Player class where it did not belong.
@@ -385,7 +335,7 @@ private void fightTheMob(){
                 "I hope you are happy!");
         player.addExpGivenFromKill(goblin.getGoblinExpGiven());
         player.getExpRequiredForLeveling();
-        gameState = 1;
+        gameState = GameState.REG_MENU;
     } else {
         int randDmg = goblin.giveRandomGoblinDamage();
         cText("You hit " + goblin.goblinName + " for " + playerDamage + " points!");
@@ -393,7 +343,6 @@ private void fightTheMob(){
         isPlayerDead();
         cText(goblin.goblinName + " hit you for " + randDmg + " points!");
         cText("Doesn't feel so good when they attack back, does it?");
-       gameState = 3;
     }
 }
 
