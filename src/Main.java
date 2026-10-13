@@ -46,7 +46,10 @@ String userCommand = "";
 private GameState gameState = GameState.WELCOME;
 
 JTextArea outputConsoleResponse;
+//JTextArea mapDisplay;
 JTextField inputUserCommand;
+//JLayeredPane layeredPane;
+//JScrollPane overlayScroll;
 
 private Room[][] currentLevel;
 private HashMap<String, Room> currentLevelMap;
@@ -88,6 +91,15 @@ void main() {
         public void run() {
         //Initiate GUI display
         GUI gameDisplayWindow = new GUI();
+//        //Create layering panes
+//        layeredPane = new JLayeredPane();
+//        layeredPane.setLayout(new GridBagLayout());
+//        GridBagConstraints gbc = new GridBagConstraints();
+//        gbc.gridx = 0;
+//        gbc.gridy = 0;
+//        gbc.weightx = 1.0;
+//        gbc.weighty = 1.0;
+//        gbc.fill = GridBagConstraints.BOTH;
         //Code for the console output into the GUI display
         outputConsoleResponse = new JTextArea();
         outputConsoleResponse.setBackground(Color.BLACK);
@@ -97,8 +109,12 @@ void main() {
         outputConsoleResponse.setLineWrap(true);
         outputConsoleResponse.setWrapStyleWord(true);
         //Allows for scrolling on previous output
-        JScrollPane scrollPane = new JScrollPane(outputConsoleResponse);
-        scrollPane.setBorder(null);
+        JScrollPane mainScrollPane = new JScrollPane(outputConsoleResponse);
+        mainScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        mainScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        mainScrollPane.setBorder(null);
+        //Default layering for the chat
+//        layeredPane.add(mainScrollPane, gbc, JLayeredPane.DEFAULT_LAYER);
         //Code for the user to input commands into the GUI display
         inputUserCommand = new JTextField();
         inputUserCommand.setBackground(Color.BLACK);
@@ -106,11 +122,23 @@ void main() {
         inputUserCommand.setCaretColor(Color.WHITE);
         inputUserCommand.setFont(new Font("Consolas", Font.PLAIN, 17));
         inputUserCommand.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.DARK_GRAY));
-
+//        //Code for the map display window to be toggled
+//        mapDisplay = new JTextArea();
+//        int mapWidth = (int) (outputConsoleResponse.getWidth() * 0.75);
+//        int mapHeight = (int) (outputConsoleResponse.getHeight() * 0.75);
+//        mapDisplay.setSize(mapWidth, mapHeight);
+//        mapDisplay.setBackground(Color.BLACK);
+//        mapDisplay.setForeground(Color.GREEN);
+//        mapDisplay.setFont(new Font("Consolas", Font.PLAIN, 15));
+//        mapDisplay.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.DARK_GRAY));
+//        mapDisplay.setLineWrap(false);
+//        mapDisplay.setWrapStyleWord(true);
+//        mapDisplay.setVisible(false);
+//        layeredPane.add(mapDisplay, gbc, JLayeredPane.PALETTE_LAYER);
         //Sets the layout for everything
         gameDisplayWindow.setLayout(new BorderLayout());
         //Sets the scroller to the middle section of the layout
-        gameDisplayWindow.add(scrollPane, BorderLayout.CENTER);
+        gameDisplayWindow.add(mainScrollPane, BorderLayout.CENTER);
         //adds user input box to the bottom of the display
         gameDisplayWindow.add(inputUserCommand, BorderLayout.SOUTH);
         //Activates the new window
@@ -126,6 +154,7 @@ void main() {
                 }
             }
         });
+//        gameDisplayWindow.add(layeredPane);
         inputUserCommand.grabFocus();
         //Start game by prompting for name
         cText("SyS: Welcome Crawler to Terran's Dungeon Crawl!");
@@ -174,6 +203,7 @@ private void processInput(String userCommand){
             } else if (DIRECTION_WEST.equalsIgnoreCase(userCommand)) {
                 headWest();
             } else if (MAP_CHECK.equalsIgnoreCase(userCommand)) {
+//                toggle(mapDisplay);
                 checkMap();
             } else if (FIGHT.equalsIgnoreCase(userCommand)) {
                 startCombat();
@@ -303,6 +333,9 @@ private void talkWithCreature() {
     isPlayerDead();
 }
 
+//private void toggle(JTextArea overlay) {
+//    overlay.setVisible(!overlay.isVisible());
+//}
 //Check Map Location
 private void checkMap() {
 //    cText("This goes nowhere. You need to play a game by better developers if you want fun stuff.");\
@@ -318,6 +351,7 @@ private void checkMap() {
             int spacesNeeded = 9 - roomName.length();
             rowOfRoomsToOutput = rowOfRoomsToOutput.concat("[" + currentLevel[i][j].getName() + " ".repeat(Math.max(spacesNeeded, 0)) + "]");
         }
+//        mapDisplay.append(rowOfRoomsToOutput);
         cText(rowOfRoomsToOutput);
     }
 
