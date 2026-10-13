@@ -1,5 +1,8 @@
 //All the imported packages
+import Rooms.Floor;
 import Util.GameState;
+import Rooms.LevelGenerator;
+import Rooms.Room;
 import Util.Goblin;
 import Util.Player;
 import Util.GUI;
@@ -45,6 +48,10 @@ private GameState gameState = GameState.WELCOME;
 JTextArea outputConsoleResponse;
 JTextField inputUserCommand;
 
+private Room[][] currentLevel;
+private HashMap<String, Room> currentLevelMap;
+private Floor floor;
+
 //private final String CHECK_TIME = "CLOCK";
 
 //List of commands the player is prompted to use.
@@ -70,6 +77,11 @@ private ArrayList<String> actualCombatOptions = new ArrayList<>(
 // TODO: Add an actual game icon in top left of GUI instead of default image
 // TODO: Cleanup project structure--Everything is currently in Util dir
 void main() {
+    // Initiates map
+    currentLevel = LevelGenerator.generateLevel();
+    currentLevelMap = LevelGenerator.generateLevelAsStringMap();
+    floor = LevelGenerator.generateFloor();
+
     //Initiates EDT for SWING
     SwingUtilities.invokeLater(new Runnable() {
         @Override
@@ -293,7 +305,41 @@ private void talkWithCreature() {
 
 //Check Map Location
 private void checkMap() {
-    cText("This goes nowhere. You need to play a game by better developers if you want fun stuff.");
+//    cText("This goes nowhere. You need to play a game by better developers if you want fun stuff.");\
+    cText("You're lost already? Yikes... Take a quick look and get your bearings before something eats you.");
+
+    cText("");
+    cText("Map generation approach 1:");
+    // Display Map to user using multi-dimensional array
+    for (int i = 0; i < currentLevel.length; i++) {
+        String rowOfRoomsToOutput = "";
+        for (int j = 0; j < currentLevel[i].length; j++) {
+            String roomName = currentLevel[i][j].getName();
+            int spacesNeeded = 9 - roomName.length();
+            rowOfRoomsToOutput = rowOfRoomsToOutput.concat("[" + currentLevel[i][j].getName() + " ".repeat(Math.max(spacesNeeded, 0)) + "]");
+        }
+        cText(rowOfRoomsToOutput);
+    }
+
+    cText("");
+    cText("Map generation approach 2:");
+    for (int x = 0; x <= floor.getXMax(); x++) {
+        String rowOfRoomsToOutput = "";
+        for (int y = 0; y <= floor.getYMax(); y++) {
+            String roomName;
+            Room foundRoom = floor.getRoom(x, y);
+
+            if (foundRoom == null) {
+                roomName = "EMPTY";
+            } else {
+                roomName = foundRoom.getName();
+            }
+
+            int spacesNeeded = 9 - roomName.length();
+            rowOfRoomsToOutput = rowOfRoomsToOutput.concat("[" + roomName + " ".repeat(Math.max(spacesNeeded, 0)) + "]");
+        }
+        cText(rowOfRoomsToOutput);
+    }
 }
 
 //Check Character Level
