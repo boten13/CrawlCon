@@ -3,12 +3,11 @@ import Rooms.Floor;
 import Util.GameState;
 import Rooms.LevelGenerator;
 import Rooms.Room;
-import Util.Goblin;
-import Util.Player;
+import EnemyTypes.Goblin;
+import GameAssets.*;
 import Util.GUI;
 // TODO: Star imports are bad
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;

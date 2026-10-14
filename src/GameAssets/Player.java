@@ -1,5 +1,4 @@
-package Util;
-import Util.Goblin;
+package GameAssets;
 import java.util.*;
 import java.util.Map;
 

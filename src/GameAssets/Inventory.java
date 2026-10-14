@@ -1,4 +1,4 @@
-package Util;
+package GameAssets;
 
 public class Inventory {
 }
