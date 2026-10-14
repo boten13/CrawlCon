@@ -119,7 +119,7 @@ void main() {
         mapDisplay = new JTextArea();
         mapDisplay.setBackground(Color.BLACK);
         mapDisplay.setForeground(Color.GREEN);
-        mapDisplay.setFont(new Font("Consolas", Font.PLAIN, 17));
+        mapDisplay.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 17));
         mapDisplay.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.DARK_GRAY));
         mapDisplay.setLineWrap(false);
         mapDisplay.setWrapStyleWord(true);
@@ -345,7 +345,7 @@ private void checkMap() {
         for (int j = 0; j < currentLevel[i].length; j++) {
             String roomName = currentLevel[i][j].getName();
             int spacesNeeded = 9 - roomName.length();
-            rowOfRoomsToOutput = rowOfRoomsToOutput.concat("[" + currentLevel[i][j].getName() + " ".repeat(Math.max(spacesNeeded, 0)) + "]");
+            rowOfRoomsToOutput = rowOfRoomsToOutput.concat( currentLevel[i][j].getName() + " ".repeat(Math.max(spacesNeeded, 0)));
         }
         mapDisplay.append("\n" + rowOfRoomsToOutput);
 //        cText(rowOfRoomsToOutput);
