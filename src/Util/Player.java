@@ -80,4 +80,7 @@ public class Player {
     public int getNeededExp() {
         return neededExp;
     }
+    public String getPlayerName() {
+        return name;
+    }
 }

@@ -36,8 +36,7 @@ private final String CHEAT = "CHEAT";
 Goblin goblin = new Goblin();
 
 //Intiates and stores name given for player
-private String playerName = "";
-Player player = new Player(playerName);
+Player player;
 
 //Stores user Input from TextField
 String userCommand = "";
@@ -106,8 +105,6 @@ void main() {
         mainScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         mainScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         mainScrollPane.setBorder(null);
-        //Default layering for the chat
-//        layeredPane.add(mainScrollPane, gbc, JLayeredPane.DEFAULT_LAYER);
         //Code for the user to input commands into the GUI display
         inputUserCommand = new JTextField();
         inputUserCommand.setBackground(Color.BLACK);
@@ -115,7 +112,7 @@ void main() {
         inputUserCommand.setCaretColor(Color.WHITE);
         inputUserCommand.setFont(new Font("Consolas", Font.PLAIN, 17));
         inputUserCommand.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.DARK_GRAY));
-//        //Code for the map display window to be toggled
+        //Code for the map display window to be toggled
         mapDisplay = new JTextArea();
         mapDisplay.setBackground(Color.BLACK);
         mapDisplay.setForeground(Color.GREEN);
@@ -158,7 +155,6 @@ void main() {
         }
     });
 }
-
 //Process User Input
 private void processInput(String userCommand){
     //Display what user prompted
@@ -168,10 +164,10 @@ private void processInput(String userCommand){
     switch (gameState) {
         case GameState.WELCOME:
             //Stores user input as name for the player
-            playerName = userCommand;
+            player = new Player(userCommand);
             //Moves case to 1
             gameState = GameState.REG_MENU;
-            cText("SyS: " + playerName + " is now your registered name!\n" +
+            cText("SyS: " + player.getPlayerName() + " is now your registered name!\n" +
                     "Sys: Let's begin your practice crawl.\n" + playerCommands.toString() +
                     "\nSyS: If you ever forget what the commands are for the menu, you can simply say the word 'MENU'" +
                     "\nSyS: Remember that because I will not be telling you about it again.\n");
@@ -214,7 +210,7 @@ private void processInput(String userCommand){
             } else {
                 cText("Fix the code related to this word: " + userCommand);
             }
-            cText("SyS: What would you like to do next, " + playerName + "?");
+            cText("SyS: What would you like to do next, " + player.getPlayerName() + "?");
             break;
         case GameState.COMBAT://Combat start case
 //                cText("SyS: You have initiated combat with " + goblin.goblinName + ".");
@@ -335,10 +331,13 @@ private void toggle(JTextArea overlay) {
 //Check Map Location
 private void checkMap() {
 //    cText("This goes nowhere. You need to play a game by better developers if you want fun stuff.");\
-    cText("You're lost already? Yikes... Take a quick look and get your bearings before something eats you.");
+    mapDisplay.append("Sys: Wow... You're lost already? \n" +
+            "That truly takes talent to be that bad at this game. \n" +
+            "Take a quick look and get your bearings before something eats you.\n" +
+            "or whatever it is you flesh bags do.\n");
 
-    cText("");
-    cText("Map generation approach 1:");
+//    cText("");
+//    cText("Map generation approach 1:");
     // Display Map to user using multi-dimensional array
     for (int i = 0; i < currentLevel.length; i++) {
         String rowOfRoomsToOutput = "";
@@ -351,25 +350,25 @@ private void checkMap() {
 //        cText(rowOfRoomsToOutput);
     }
 
-    cText("");
-    cText("Map generation approach 2:");
-    for (int x = 0; x <= floor.getXMax(); x++) {
-        String rowOfRoomsToOutput = "";
-        for (int y = 0; y <= floor.getYMax(); y++) {
-            String roomName;
-            Room foundRoom = floor.getRoom(x, y);
-
-            if (foundRoom == null) {
-                roomName = "EMPTY";
-            } else {
-                roomName = foundRoom.getName();
-            }
-
-            int spacesNeeded = 9 - roomName.length();
-            rowOfRoomsToOutput = rowOfRoomsToOutput.concat("[" + roomName + " ".repeat(Math.max(spacesNeeded, 0)) + "]");
-        }
-        cText(rowOfRoomsToOutput);
-    }
+//    cText("");
+//    cText("Map generation approach 2:");
+//    for (int x = 0; x <= floor.getXMax(); x++) {
+//        String rowOfRoomsToOutput = "";
+//        for (int y = 0; y <= floor.getYMax(); y++) {
+//            String roomName;
+//            Room foundRoom = floor.getRoom(x, y);
+//
+//            if (foundRoom == null) {
+//                roomName = "EMPTY";
+//            } else {
+//                roomName = foundRoom.getName();
+//            }
+//
+//            int spacesNeeded = 9 - roomName.length();
+//            rowOfRoomsToOutput = rowOfRoomsToOutput.concat("[" + roomName + " ".repeat(Math.max(spacesNeeded, 0)) + "]");
+//        }
+//        cText(rowOfRoomsToOutput);
+//    }
 }
 
 //Check Character Level
@@ -427,7 +426,7 @@ public void isPlayerDead() {
     if (player.getPlayersHealth() < 0) {
         JOptionPane.showMessageDialog(null, "You have died");
         System.exit(0);
-        cText(playerName + " has died. I am actually shocked because the developers made this game pretty easy.");
+        cText(player.getPlayerName() + " has died. I am actually shocked because the developers made this game pretty easy.");
     }
 }
 
