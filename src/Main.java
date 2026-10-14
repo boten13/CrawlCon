@@ -44,11 +44,7 @@ String userCommand = "";
 //Used for the switch:case
 private GameState gameState = GameState.WELCOME;
 
-JTextArea outputConsoleResponse;
-JTextArea mapDisplay;
-CardLayout cardLayout;
-JPanel cardPanel;
-JTextField inputUserCommand;
+GUI gameDisplayWindow;
 
 private Room[][] currentLevel;
 private HashMap<String, Room> currentLevelMap;
@@ -76,7 +72,6 @@ private ArrayList<String> actualCombatOptions = new ArrayList<>(
         List.of(ATTACK_CREATURE, RUN, USE_ITEM, TALK, CHEAT)
 );
 
-// TODO: Add an actual game icon in top left of GUI instead of default image
 // TODO: Cleanup project structure--Everything is currently in Util dir
 void main() {
     // Initiates map
@@ -89,66 +84,19 @@ void main() {
         @Override
         public void run() {
         //Initiate GUI display
-        GUI gameDisplayWindow = new GUI();
-        cardLayout = new CardLayout();
-        cardPanel = new JPanel(cardLayout);
-        //Code for the console output into the GUI display
-        outputConsoleResponse = new JTextArea();
-        outputConsoleResponse.setBackground(Color.BLACK);
-        outputConsoleResponse.setForeground(Color.GREEN);
-        outputConsoleResponse.setFont(new Font("Consolas", Font.PLAIN, 17));
-        outputConsoleResponse.setEditable(false);
-        outputConsoleResponse.setLineWrap(true);
-        outputConsoleResponse.setWrapStyleWord(true);
-        //Allows for scrolling on previous output
-        JScrollPane mainScrollPane = new JScrollPane(outputConsoleResponse);
-        mainScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        mainScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        mainScrollPane.setBorder(null);
-        //Code for the user to input commands into the GUI display
-        inputUserCommand = new JTextField();
-        inputUserCommand.setBackground(Color.BLACK);
-        inputUserCommand.setForeground(Color.GREEN);
-        inputUserCommand.setCaretColor(Color.WHITE);
-        inputUserCommand.setFont(new Font("Consolas", Font.PLAIN, 17));
-        inputUserCommand.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.DARK_GRAY));
-        //Code for the map display window to be toggled
-        mapDisplay = new JTextArea();
-        mapDisplay.setBackground(Color.BLACK);
-        mapDisplay.setForeground(Color.GREEN);
-        mapDisplay.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 17));
-        mapDisplay.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.DARK_GRAY));
-        mapDisplay.setLineWrap(false);
-        mapDisplay.setWrapStyleWord(true);
-        mapDisplay.setVisible(true);
-        //Set scroll pane for text Area
-        JScrollPane secondScrollPane = new JScrollPane(mapDisplay);
-        mainScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        mainScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        mainScrollPane.setBorder(null);
-        //Add scroll panels to card layout
-        cardPanel.add(mainScrollPane);
-        cardPanel.add(secondScrollPane);
-        //Sets the layout for everything
-        gameDisplayWindow.setLayout(new BorderLayout());
-        //Sets the scroller to the middle section of the layout
-        gameDisplayWindow.add(cardPanel, BorderLayout.CENTER);
-        //adds user input box to the bottom of the display
-        gameDisplayWindow.add(inputUserCommand, BorderLayout.SOUTH);
-        //Activates the new window
-        gameDisplayWindow.setVisible(true);
+        gameDisplayWindow = new GUI();
         //Creates listener for user input
-        inputUserCommand.addActionListener(new ActionListener() {
+        gameDisplayWindow.getInputUserCommand().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                userCommand = inputUserCommand.getText();
+                userCommand = gameDisplayWindow.getInputUserCommand().getText();
                 if (!userCommand.isEmpty()) {
                     processInput(userCommand);
-                inputUserCommand.setText("");
+                    gameDisplayWindow.getInputUserCommand().setText("");
                 }
             }
         });
-        inputUserCommand.grabFocus();
+            gameDisplayWindow.getInputUserCommand().grabFocus();
         //Start game by prompting for name
         cText("SyS: Welcome Crawler to Terran's Dungeon Crawl!");
         cText("SyS: Please enter your registered crawler name for your time inside the crawl!");
@@ -159,8 +107,7 @@ void main() {
 private void processInput(String userCommand){
     //Display what user prompted
     cText("\n>" + userCommand + "\n");
-
-    // TODO: Use enum
+    //Game state: Bounces between what is accessible at any given moment
     switch (gameState) {
         case GameState.WELCOME:
             //Stores user input as name for the player
@@ -172,7 +119,6 @@ private void processInput(String userCommand){
                     "\nSyS: If you ever forget what the commands are for the menu, you can simply say the word 'MENU'" +
                     "\nSyS: Remember that because I will not be telling you about it again.\n");
             break;
-
         case GameState.REG_MENU: //Reg options case
             //Cheat Word Menu to display the menu again
             if (REG_MENU.equalsIgnoreCase(userCommand)) {
@@ -195,7 +141,7 @@ private void processInput(String userCommand){
             } else if (DIRECTION_WEST.equalsIgnoreCase(userCommand)) {
                 headWest();
             } else if (MAP_CHECK.equalsIgnoreCase(userCommand)) {
-                toggle(mapDisplay);
+                gameDisplayWindow.toggle();
                 checkMap();
             } else if (FIGHT.equalsIgnoreCase(userCommand)) {
                 startCombat();
@@ -213,10 +159,6 @@ private void processInput(String userCommand){
             cText("SyS: What would you like to do next, " + player.getPlayerName() + "?");
             break;
         case GameState.COMBAT://Combat start case
-//                cText("SyS: You have initiated combat with " + goblin.goblinName + ".");
-//                cText("SyS: This is your combat menu options.");
-//                cText(combatCommands.toString());
-
             //Hidden menu items in combat menu
             if (COMBAT_MENU.equalsIgnoreCase(userCommand)){
                 cText(combatCommands.toString());
@@ -252,8 +194,8 @@ private void processInput(String userCommand){
 
 //Converts Strings to output on GameDisplay -- ShortHanded for ConvertText
 private void cText(String text) {
-    outputConsoleResponse.append("\n" + text);
-    outputConsoleResponse.setCaretPosition(outputConsoleResponse.getDocument().getLength());
+    gameDisplayWindow.getOutputConsoleResponse().append("\n" + text);
+    gameDisplayWindow.getOutputConsoleResponse().setCaretPosition(gameDisplayWindow.getOutputConsoleResponse().getDocument().getLength());
 }
 
 //Function to describe what player can see.
@@ -324,21 +266,13 @@ private void talkWithCreature() {
     player.goblinDoesDamage(deservedDmg);
     isPlayerDead();
 }
-//Toggle map on and off
-private void toggle(JTextArea overlay) {
-    cardLayout.next(cardPanel);
-}
 //Check Map Location
 private void checkMap() {
-//    cText("This goes nowhere. You need to play a game by better developers if you want fun stuff.");\
-    mapDisplay.append("Sys: Wow... You're lost already? \n" +
+    gameDisplayWindow.getMapDisplay().append("Sys: Wow... You're lost already? \n" +
             "That truly takes talent to be that bad at this game. \n" +
             "Take a quick look and get your bearings before something eats you.\n" +
             "or whatever it is you flesh bags do.\n");
 
-//    cText("");
-//    cText("Map generation approach 1:");
-    // Display Map to user using multi-dimensional array
     for (int i = 0; i < currentLevel.length; i++) {
         String rowOfRoomsToOutput = "";
         for (int j = 0; j < currentLevel[i].length; j++) {
@@ -346,7 +280,7 @@ private void checkMap() {
             int spacesNeeded = 9 - roomName.length();
             rowOfRoomsToOutput = rowOfRoomsToOutput.concat( currentLevel[i][j].getName() + " ".repeat(Math.max(spacesNeeded, 0)));
         }
-        mapDisplay.append("\n" + rowOfRoomsToOutput);
+        gameDisplayWindow.getMapDisplay().append("\n" + rowOfRoomsToOutput);
 //        cText(rowOfRoomsToOutput);
     }
 
