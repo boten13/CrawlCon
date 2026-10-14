@@ -1,0 +1,14 @@
+TODO:
+ -Set up WALL rooms
+ -Set up HALLWAY rooms
+ -Set up Player Directions
+ -Set up Player Movement Methods
+ -Set up Player Location display in map
+ -Set up player known location in Player
+ -Set up new Enemy Types
+ -Set up Menu display for choice of which enemy to attack when confronting multiple enemies
+ -Set up inventory items
+ -Set up loot drops
+ (Do you want loop drops or items to collect off floor?)
+
+Oct 15: Set up wall rooms and Hallway rooms.

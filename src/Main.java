@@ -196,7 +196,7 @@ private void cText(String text) {
     gameDisplayWindow.getOutputConsoleResponse().append("\n" + text);
     gameDisplayWindow.getOutputConsoleResponse().setCaretPosition(gameDisplayWindow.getOutputConsoleResponse().getDocument().getLength());
 }
-
+// TODO: Move all direction mehthods into different directory
 //Function to describe what player can see.
 private void lookAround() {
     cText("You can see nothing right now, the developers haven't programmed the space in which we exist. " +
