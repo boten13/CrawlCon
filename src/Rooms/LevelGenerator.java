@@ -14,6 +14,15 @@ public class LevelGenerator {
             Arrays.fill(map[i], new EmptyRoom());
         }
         map[0][0] = new SafehouseRoom();
+        map[1][0] = new Wall();
+        map[2][0] = new Wall();
+        map[3][0] = new Wall();
+        map[4][0] = new Wall();
+        map[0][2] = new Wall();
+        map[1][2] = new Wall();
+        map[3][2] = new Wall();
+        map[4][2] = new Wall();
+        map[2][2] = new Wall();
         map[2][5] = new EnemyRoom("Goblin");
         map[3][9] = new EnemyRoom("Goblin");
         map[3][8] = new EnemyRoom("Hobgoblin");

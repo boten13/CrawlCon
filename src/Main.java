@@ -277,7 +277,7 @@ private void checkMap() {
         for (int j = 0; j < currentLevel[i].length; j++) {
             String roomName = currentLevel[i][j].getName();
             int spacesNeeded = 9 - roomName.length();
-            rowOfRoomsToOutput = rowOfRoomsToOutput.concat( currentLevel[i][j].getName() + " ".repeat(Math.max(spacesNeeded, 0)));
+            rowOfRoomsToOutput = rowOfRoomsToOutput.concat(currentLevel[i][j].getName() + " " );
         }
         gameDisplayWindow.getMapDisplay().append("\n" + rowOfRoomsToOutput);
 //        cText(rowOfRoomsToOutput);
