@@ -74,6 +74,9 @@ public class GUI extends JFrame {
         //Creates listener for user input
     }
     public void toggle() {
+        //Clears the mapDisplay so it is not displaying previous versions of the map
+        mapDisplay.setText(" ");
+        //Flips the panels, 1 displays the rest of the game, the other just the map.
         cardLayout.next(cardPanel);
     }
     public JTextArea getMapDisplay() {

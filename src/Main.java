@@ -141,7 +141,11 @@ private void processInput(String userCommand){
                 headWest();
             } else if (MAP_CHECK.equalsIgnoreCase(userCommand)) {
                 gameDisplayWindow.toggle();
+                cText("Did you enjoy looking at the map? Was it cool? it was quite the process to get that working. " +
+                        "By the way, this message is going to show up each time you type the word map. Maybe I can " +
+                        "convince one of them to get this fix, probably not. I wouldn't hold my breath if I was you.");
                 checkMap();
+                //TODO see if we can clear input and output for flipping between the map so much?
             } else if (FIGHT.equalsIgnoreCase(userCommand)) {
                 startCombat();
             } else if (INVENTORY.equalsIgnoreCase(userCommand)) {
