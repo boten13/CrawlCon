@@ -209,24 +209,47 @@ private void lookAround() {
 
 //Move Player East
 private void headEast() {
-    cText("You go nowhere. Currently you live in a 1 by 1 square block that does nothing.");
+    if (checkDirection(player.getYLoc(), player.getXLoc() + 1)) {
+        player.setXLoc(1);
+    }
+//    cText("You go nowhere. Currently you live in a 1 by 1 square block that does nothing.");
+
 }
 
 //Move Player West
 private void headWest() {
-    cText("You go nowhere. Currently you live in a 1 by 1 square block that does nothing.");
+    if (checkDirection(player.getYLoc(), player.getXLoc() - 1)) {
+        player.setXLoc(-1);
+//    cText("You go nowhere. Currently you live in a 1 by 1 square block that does nothing.");
+    }
 }
 
 //Move Player North
 private void headNorth() {
-    cText("SyS: You go nowhere. Currently you live in a 1 by 1 square block that does nothing.");
+        if (checkDirection(player.getYLoc() - 1, player.getXLoc())) {
+            player.setYLoc(-1);
+    }
+//    cText("SyS: You go nowhere. Currently you live in a 1 by 1 square block that does nothing.");
 }
 
 //Move Player South
 private void headSouth() {
-    cText("You go nowhere. Currently you live in a 1 by 1 square block that does nothing.");
+        if (checkDirection(player.getYLoc() + 1, player.getXLoc())) {
+            player.setYLoc(1);
+    }
+//    cText("You go nowhere. Currently you live in a 1 by 1 square block that does nothing.");
 }
 
+
+//Checking player locale vs which room
+public boolean checkDirection(int y, int x) {
+    if (!currentLevel[y][x].canYouGetIn()) {
+        cText("You can not move through a wall");
+        return false;
+    } else {
+        return true;
+    }
+}
 //Initiate combat
 private void startCombat() {
     goblin.createGoblinMob();
@@ -272,15 +295,16 @@ private void checkMap() {
             "Take a quick look and get your bearings before something eats you.\n" +
             "or whatever it is you flesh bags do.\n");
 
-    for (int i = 0; i < currentLevel.length; i++) {
+    for (int y = 0; y < currentLevel.length; y++) {
         String rowOfRoomsToOutput = "";
-        for (int j = 0; j < currentLevel[i].length; j++) {
-            String roomName = currentLevel[i][j].getName();
-            int spacesNeeded = 9 - roomName.length();
-            rowOfRoomsToOutput = rowOfRoomsToOutput.concat(currentLevel[i][j].getName() + " " );
+        for (int x = 0; x < currentLevel[y].length; x++) {
+            if (player.getXLoc() == x && player.getYLoc() == y) {
+                rowOfRoomsToOutput = rowOfRoomsToOutput.concat(player.getPlayerIcon() + " ");
+            } else {
+                rowOfRoomsToOutput = rowOfRoomsToOutput.concat(currentLevel[y][x].getName() + " ");
+            }
         }
         gameDisplayWindow.getMapDisplay().append("\n" + rowOfRoomsToOutput);
-//        cText(rowOfRoomsToOutput);
     }
 
 //    cText("");

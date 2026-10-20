@@ -1,6 +1,6 @@
 TODO:
- -Set up WALL rooms
- -Set up HALLWAY rooms
+ -Set up WALL rooms: Done
+ -Set up HALLWAY rooms: Done
  -Set up Player Directions
  -Set up Player Movement Methods
  -Set up Player Location display in map
@@ -11,4 +11,3 @@ TODO:
  -Set up loot drops
  (Do you want loop drops or items to collect off floor?)
 
-Oct 15: Set up wall rooms and Hallway rooms.

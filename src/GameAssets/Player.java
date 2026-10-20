@@ -15,6 +15,9 @@ public class Player {
     private int playersHealth;
     private int playerDamage;
     Random rand = new Random();
+    int yLoc = 0;
+    int xLoc = 1;
+    String playerIcon = "\uD83D\uDC64";
 
 // Stores Player Registerd name provided at the beginning of the game;
     public Player(String playerName) {
@@ -63,6 +66,26 @@ public class Player {
     public int goblinDoesDamage(int goblinDamage){
         playersHealth -= goblinDamage;
         return playersHealth;
+    }
+
+    public String getPlayerIcon() {
+        return playerIcon;
+    }
+
+    public int getYLoc() {
+        return yLoc;
+    }
+
+    public int getXLoc() {
+        return xLoc;
+    }
+
+    public void setYLoc(int y) {
+        yLoc += y;
+    }
+
+    public void setXLoc(int x) {
+        xLoc += x;
     }
 
 
