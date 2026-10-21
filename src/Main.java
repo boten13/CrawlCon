@@ -1,7 +1,6 @@
 //All the imported packages
 import Rooms.Floor;
 import Util.GameState;
-import Rooms.LevelGenerator;
 import Rooms.Room;
 import EnemyTypes.Goblin;
 import GameAssets.*;
@@ -45,9 +44,7 @@ private GameState gameState = GameState.WELCOME;
 
 GUI gameDisplayWindow;
 
-private Room[][] currentLevel;
-private HashMap<String, Room> currentLevelMap;
-private Floor floor;
+private Floor currentLevel;
 
 //private final String CHECK_TIME = "CLOCK";
 
@@ -74,9 +71,7 @@ private ArrayList<String> actualCombatOptions = new ArrayList<>(
 // TODO: Cleanup project structure--Everything is currently in Util dir
 void main() {
     // Initiates map
-    currentLevel = LevelGenerator.generateLevel();
-    currentLevelMap = LevelGenerator.generateLevelAsStringMap();
-    floor = LevelGenerator.generateFloor();
+    currentLevel = new Floor();
 
     //Initiates EDT for SWING
     SwingUtilities.invokeLater(new Runnable() {
@@ -244,7 +239,7 @@ private void headSouth() {
 
 //Checking player locale vs which room
 public boolean checkDirection(int y, int x) {
-    if (!currentLevel[y][x].canYouGetIn()) {
+    if (!currentLevel.getRoom(y, x).canYouGetIn()) {
         cText("You can not move through a wall");
         return false;
     } else {
@@ -289,6 +284,15 @@ private void talkWithCreature() {
     player.goblinDoesDamage(deservedDmg);
     isPlayerDead();
 }
+//Checks the bounds of the map size
+//private boolean isOutOfBounds() {
+//    if (y/x =- num) {
+//        return false;
+//    } else if (y/x exceeds map bounds) {
+//        return false;
+//    }
+//    return true;
+//}
 //Check Map Location
 private void checkMap() {
     gameDisplayWindow.getMapDisplay().append("Sys: Wow... You're lost already? \n" +
@@ -296,37 +300,17 @@ private void checkMap() {
             "Take a quick look and get your bearings before something eats you.\n" +
             "or whatever it is you flesh bags do.\n");
 
-    for (int y = 0; y < currentLevel.length; y++) {
+    for (int y = 0; y < currentLevel.getMap().length; y++) {
         String rowOfRoomsToOutput = "";
-        for (int x = 0; x < currentLevel[y].length; x++) {
+        for (int x = 0; x < currentLevel.getMap()[y].length; x++) {
             if (player.getXLoc() == x && player.getYLoc() == y) {
                 rowOfRoomsToOutput = rowOfRoomsToOutput.concat(player.getPlayerIcon() + " ");
             } else {
-                rowOfRoomsToOutput = rowOfRoomsToOutput.concat(currentLevel[y][x].getName() + " ");
+                rowOfRoomsToOutput = rowOfRoomsToOutput.concat(currentLevel.getRoom(y, x).getName() + " ");
             }
         }
         gameDisplayWindow.getMapDisplay().append("\n" + rowOfRoomsToOutput);
     }
-
-//    cText("");
-//    cText("Map generation approach 2:");
-//    for (int x = 0; x <= floor.getXMax(); x++) {
-//        String rowOfRoomsToOutput = "";
-//        for (int y = 0; y <= floor.getYMax(); y++) {
-//            String roomName;
-//            Room foundRoom = floor.getRoom(x, y);
-//
-//            if (foundRoom == null) {
-//                roomName = "EMPTY";
-//            } else {
-//                roomName = foundRoom.getName();
-//            }
-//
-//            int spacesNeeded = 9 - roomName.length();
-//            rowOfRoomsToOutput = rowOfRoomsToOutput.concat("[" + roomName + " ".repeat(Math.max(spacesNeeded, 0)) + "]");
-//        }
-//        cText(rowOfRoomsToOutput);
-//    }
 }
 
 //Check Character Level

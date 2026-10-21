@@ -9,5 +9,6 @@ TODO:
  -Set up Menu display for choice of which enemy to attack when confronting multiple enemies
  -Set up inventory items
  -Set up loot drops
+ -Fix typing while looking at map (corrupts game at moment)
  (Do you want loop drops or items to collect off floor?)
 
