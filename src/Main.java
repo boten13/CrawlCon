@@ -1,7 +1,6 @@
 //All the imported packages
 import Rooms.Floor;
 import Util.GameState;
-import Rooms.Room;
 import EnemyTypes.Goblin;
 import GameAssets.*;
 import Util.GUI;
@@ -239,8 +238,11 @@ private void headSouth() {
 
 //Checking player locale vs which room
 public boolean checkDirection(int y, int x) {
-    if (!currentLevel.getRoom(y, x).canYouGetIn()) {
-        cText("You can not move through a wall");
+    if (!isOnMap(y, x)) {
+        cText("You can not leave the bounds of the dungeon floor.");
+        return false;
+    } else if (!currentLevel.getRoom(y, x).canYouGetIn()) {
+        cText("You can not go through a wall.");
         return false;
     } else {
         return true;
@@ -285,14 +287,14 @@ private void talkWithCreature() {
     isPlayerDead();
 }
 //Checks the bounds of the map size
-//private boolean isOutOfBounds() {
-//    if (y/x =- num) {
-//        return false;
-//    } else if (y/x exceeds map bounds) {
-//        return false;
-//    }
-//    return true;
-//}
+private boolean isOnMap(int y, int x) {
+    if (y < 0|| x < 0) {
+        return false;
+    } else if (y > (currentLevel.getYMax()-1) || x > (currentLevel.getXMax())-1) {
+        return false;
+    }
+    return true;
+}
 //Check Map Location
 private void checkMap() {
     gameDisplayWindow.getMapDisplay().append("Sys: Wow... You're lost already? \n" +
