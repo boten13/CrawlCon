@@ -1,14 +1,19 @@
 TODO:
  -Set up WALL rooms: Done
  -Set up HALLWAY rooms: Done
- -Set up Player Directions
- -Set up Player Movement Methods
- -Set up Player Location display in map
- -Set up player known location in Player
+ -Set up Player Directions: Done
+ -Set up Player Movement Methods: Done
+ -Set up Player Location display in map: Done
+ -Set up player known location in Player: Done
  -Set up new Enemy Types
  -Set up Menu display for choice of which enemy to attack when confronting multiple enemies
  -Set up inventory items
  -Set up loot drops
+ -Create player inventory in player class
+ -Method to pull loot based off enemy kill
+ -Create 3 dif types boss
+ -Finalize actual map layout
  -Fix typing while looking at map (corrupts game at moment)
+ -Create Snark Package to hold thousands of lines of snark, with methods to random pull.
  (Do you want loop drops or items to collect off floor?)
 

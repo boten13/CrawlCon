@@ -57,7 +57,6 @@ private ArrayList<String> actualMenu = new ArrayList<>(
         List.of(DIRECTION_EAST, DIRECTION_NORTH, DIRECTION_SOUTH, DIRECTION_WEST, LOOK_AROUND, MAP_CHECK, FIGHT,
                 INVENTORY, CHARACTER_SHEET, END_GAME, REG_MENU)
 );
-
 //List of commands the player is prompted to use while fighting.
 private ArrayList<String> combatCommands = new ArrayList<>(
         List.of(ATTACK_CREATURE, RUN, USE_ITEM, TALK)
@@ -66,7 +65,6 @@ private ArrayList<String> combatCommands = new ArrayList<>(
 private ArrayList<String> actualCombatOptions = new ArrayList<>(
         List.of(ATTACK_CREATURE, RUN, USE_ITEM, TALK, CHEAT)
 );
-
 // TODO: Cleanup project structure--Everything is currently in Util dir
 void main() {
     // Initiates map
@@ -185,7 +183,6 @@ private void processInput(String userCommand){
             break;
     }
 }
-
 //Converts Strings to output on GameDisplay -- ShortHanded for ConvertText
 private void cText(String text) {
     gameDisplayWindow.getOutputConsoleResponse().append("\n" + text);
@@ -201,41 +198,30 @@ private void lookAround() {
             "be a words on a page that you are reading and nothing more. " +
             "Alright, enough of that dark rabbit hole. Point is, there is nothing to see right now.");
 }
-
 //Move Player East
 private void headEast() {
     if (checkDirection(player.getYLoc(), player.getXLoc() + 1)) {
         player.setXLoc(1);
     }
-//    cText("You go nowhere. Currently you live in a 1 by 1 square block that does nothing.");
-
 }
-
 //Move Player West
 private void headWest() {
     if (checkDirection(player.getYLoc(), player.getXLoc() - 1)) {
         player.setXLoc(-1);
-//    cText("You go nowhere. Currently you live in a 1 by 1 square block that does nothing.");
     }
 }
-
 //Move Player North
 private void headNorth() {
         if (checkDirection(player.getYLoc() - 1, player.getXLoc())) {
             player.setYLoc(-1);
     }
-//    cText("SyS: You go nowhere. Currently you live in a 1 by 1 square block that does nothing.");
 }
-
 //Move Player South
 private void headSouth() {
         if (checkDirection(player.getYLoc() + 1, player.getXLoc())) {
             player.setYLoc(1);
     }
-//    cText("You go nowhere. Currently you live in a 1 by 1 square block that does nothing.");
 }
-
-
 //Checking player locale vs which room
 public boolean checkDirection(int y, int x) {
     if (!isOnMap(y, x)) {
@@ -288,12 +274,7 @@ private void talkWithCreature() {
 }
 //Checks the bounds of the map size
 private boolean isOnMap(int y, int x) {
-    if (y < 0|| x < 0) {
-        return false;
-    } else if (y > (currentLevel.getYMax()-1) || x > (currentLevel.getXMax())-1) {
-        return false;
-    }
-    return true;
+    return (y >= 0 && x >= 0 && y <= (currentLevel.getYMax() - 1) && x <= (currentLevel.getXMax()) - 1);
 }
 //Check Map Location
 private void checkMap() {
@@ -339,7 +320,6 @@ private void cheatMode() {
     cText("Exp pool: " + goblin.getGoblinExpGiven());
     cText("Health pool: " + goblin.getGoblinHealth());
 }
-
 /** The fight function has been moved here instead of under the Player class where it did not belong.
  * Will need help on parsing in intel from player class and mob class to preform combat logic here.
  */
@@ -364,7 +344,6 @@ private void fightTheMob(){
         cText("Doesn't feel so good when they attack back, does it?");
     }
 }
-
 //Checks if player has died, displays pop up window if yes
 public void isPlayerDead() {
     if (player.getPlayersHealth() < 0) {
@@ -373,7 +352,6 @@ public void isPlayerDead() {
         cText(player.getPlayerName() + " has died. I am actually shocked because the developers made this game pretty easy.");
     }
 }
-
 //Checks if the mob has died
 private boolean isMobDead(int goblinHeatlh) {
     if (goblinHeatlh < 1) {
@@ -382,7 +360,6 @@ private boolean isMobDead(int goblinHeatlh) {
         return false;
     }
 }
-
 //Ends the game
 private void endGame() {
     cText("You are weak and pathetic.");
