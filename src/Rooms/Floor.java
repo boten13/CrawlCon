@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class Floor {
-    private List<RoomWithCoordinates> rooms = new ArrayList<>();
     private int xMax;
     private int yMax;
     private Room[][] map;
@@ -28,7 +27,6 @@ public class Floor {
         map[4][0] = new Wall();
         map[0][2] = new Wall();
         map[1][2] = new Wall();
-        map[3][2] = new Wall();
         map[4][2] = new Wall();
         map[2][2] = new Wall();
         map[2][5] = new EnemyRoom("Goblin");
@@ -38,19 +36,6 @@ public class Floor {
         map[4][9] = new EnemyRoom("Boss");
 
         return map;
-    }
-
-    public void addRoom(Room room, int xPos, int yPos) {
-        boolean doesRoomPositionAlreadyExist = rooms.stream()
-                .anyMatch((r) -> r.xPos == xPos && r.yPos == yPos);
-
-        if (doesRoomPositionAlreadyExist) {
-            return;
-        }
-
-        rooms.add(new RoomWithCoordinates(room, xPos, yPos));
-        xMax = Math.max(xMax, xPos);
-        yMax = Math.max(yMax, yPos);
     }
 
     public int getXMax() {

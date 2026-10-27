@@ -1,5 +1,8 @@
 //All the imported packages
+import Rooms.EnemyRoom;
 import Rooms.Floor;
+import Rooms.Room;
+import Rooms.SafehouseRoom;
 import Util.GameState;
 import EnemyTypes.Goblin;
 import GameAssets.*;
@@ -202,24 +205,28 @@ private void lookAround() {
 private void headEast() {
     if (checkDirection(player.getYLoc(), player.getXLoc() + 1)) {
         player.setXLoc(1);
+        enterRoom(player.getYLoc(), player.getXLoc());
     }
 }
 //Move Player West
 private void headWest() {
     if (checkDirection(player.getYLoc(), player.getXLoc() - 1)) {
         player.setXLoc(-1);
+        enterRoom(player.getYLoc(), player.getXLoc());
     }
 }
 //Move Player North
 private void headNorth() {
-        if (checkDirection(player.getYLoc() - 1, player.getXLoc())) {
-            player.setYLoc(-1);
+    if (checkDirection(player.getYLoc() - 1, player.getXLoc())) {
+        player.setYLoc(-1);
+        enterRoom(player.getYLoc(), player.getXLoc());
     }
 }
 //Move Player South
 private void headSouth() {
-        if (checkDirection(player.getYLoc() + 1, player.getXLoc())) {
-            player.setYLoc(1);
+    if (checkDirection(player.getYLoc() + 1, player.getXLoc())) {
+        player.setYLoc(1);
+        enterRoom(player.getYLoc(), player.getXLoc());
     }
 }
 //Checking player locale vs which room
@@ -232,6 +239,15 @@ public boolean checkDirection(int y, int x) {
         return false;
     } else {
         return true;
+    }
+}
+//Check Player location vs room
+public void enterRoom(int y, int x) {
+    Room room = currentLevel.getRoom(y, x);
+    if (room instanceof EnemyRoom){
+        cText(room.getDescription());
+    } else if (room instanceof SafehouseRoom){
+        cText("You are safe here crawler.");
     }
 }
 //Initiate combat
