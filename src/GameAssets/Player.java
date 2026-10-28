@@ -18,6 +18,7 @@ public class Player {
     int yLoc = 20;
     int xLoc = 7;
     String playerIcon = "\uD83D\uDC64";
+    int visibility;
 
 // Stores Player Registerd name provided at the beginning of the game;
     public Player(String playerName) {
@@ -25,6 +26,7 @@ public class Player {
         playerLevel = 1;
         playerExp = 0;
         playersHealth = 50;
+        visibility = 2;
     }
 
     //Checks the Player level based off exp points;
@@ -48,6 +50,10 @@ public class Player {
         } else {
             levelUp();
         }
+    }
+
+    public int getVisibility() {
+        return visibility;
     }
 
     //Create random amount of damage user provides without weapon

@@ -304,14 +304,16 @@ private void checkMap() {
         for (int x = 0; x < currentLevel.getMap()[y].length; x++) {
             if (player.getXLoc() == x && player.getYLoc() == y) {
                 rowOfRoomsToOutput = rowOfRoomsToOutput.concat(player.getPlayerIcon() + " ");
-            } else {
+            } else if (Math.abs(y - player.getYLoc()) <= player.getVisibility()
+                    && Math.abs(x - player.getXLoc()) <= player.getVisibility()){
                 rowOfRoomsToOutput = rowOfRoomsToOutput.concat(currentLevel.getRoom(y, x).getName() + " ");
             }
         }
-        gameDisplayWindow.getMapDisplay().append("\n" + rowOfRoomsToOutput);
+        if (!rowOfRoomsToOutput.isEmpty())  {
+            gameDisplayWindow.getMapDisplay().append("\n" + rowOfRoomsToOutput);
+        }
     }
 }
-
 //Check Character Level
 private void characterSheet() {
     if (player.getPlayerExp() == 0) {

@@ -12,7 +12,7 @@ TODO:
  -Create player inventory in player class
  -Method to pull loot based off enemy kill
  -Create 3 dif types boss
- -Finalize actual map layout
+ -Finalize actual map layout : Mostly Done
  -Fix typing while looking at map (corrupts game at moment)
  -Create Snark Package to hold thousands of lines of snark, with methods to random pull.
  (Do you want loop drops or items to collect off floor?)
