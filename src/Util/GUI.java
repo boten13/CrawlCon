@@ -57,9 +57,9 @@ public class GUI extends JFrame {
         mapDisplay.setVisible(true);
         //Set scroll pane for text Area
         JScrollPane secondScrollPane = new JScrollPane(mapDisplay);
-        mainScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        mainScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        mainScrollPane.setBorder(null);
+        secondScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        secondScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        secondScrollPane.setBorder(null);
         //Add scroll panels to card layout
         cardPanel.add(mainScrollPane);
         cardPanel.add(secondScrollPane);

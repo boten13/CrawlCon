@@ -15,8 +15,8 @@ public class Player {
     private int playersHealth;
     private int playerDamage;
     Random rand = new Random();
-    int yLoc = 0;
-    int xLoc = 1;
+    int yLoc = 20;
+    int xLoc = 7;
     String playerIcon = "\uD83D\uDC64";
 
 // Stores Player Registerd name provided at the beginning of the game;
