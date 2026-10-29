@@ -139,6 +139,7 @@ private void processInput(String userCommand){
                 gameDisplayWindow.getOutputConsoleResponse().setText("Hope you remembered what I told you.");
                 gameDisplayWindow.toggle();
                 checkMap();
+                //TODO: Fight should only work when in hallway with rats and no where else
             } else if (FIGHT.equalsIgnoreCase(userCommand)) {
                 startCombat();
             } else if (INVENTORY.equalsIgnoreCase(userCommand)) {
@@ -248,8 +249,10 @@ public void enterRoom(int y, int x) {
     if (room instanceof EnemyRoom){
         cText(room.getDescription());
         ((EnemyRoom) room).enterRoom();
+        //TODO: Have more than one enemy populate correctly
         goblin = ((EnemyRoom) room).getEnemyList().getFirst();
-        gameState = GameState.COMBAT;
+        startCombat();
+        //TODO: Method to turn enemy bodies into dead body objects and have noncombative states
     } else if (room instanceof SafehouseRoom){
         cText("You are safe here crawler.");
     }
@@ -345,6 +348,7 @@ private void cheatMode() {
 /** The fight function has been moved here instead of under the Player class where it did not belong.
  * Will need help on parsing in intel from player class and mob class to preform combat logic here.
  */
+//TODO: Needs to be refactored to display entire list of enemies and choose which one to fight
 private void fightTheMob(){
     int playerDamage = player.getRandomPlayerDamageWithoutWeapon();
     goblin.playerDamagesEnemy(playerDamage);
