@@ -61,4 +61,9 @@ public class Enemy {
     public int getDamage() {
         return damage;
     }
+
+    public int playerDamagesEnemy(int playerDamage) {
+        enemyHealth -= playerDamage;
+        return enemyHealth;
+    }
 }

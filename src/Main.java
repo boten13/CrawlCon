@@ -1,4 +1,5 @@
 //All the imported packages
+import EnemyTypes.Enemy;
 import Rooms.EnemyRoom;
 import Rooms.Floor;
 import Rooms.Room;
@@ -33,7 +34,7 @@ private final String TALK = "TALK";
 private final String CHEAT = "CHEAT";
 
 //Generate goblin Object
-Goblin goblin = new Goblin();
+Enemy goblin = null;
 
 //Intiates and stores name given for player
 Player player;
@@ -246,14 +247,17 @@ public void enterRoom(int y, int x) {
     Room room = currentLevel.getRoom(y, x);
     if (room instanceof EnemyRoom){
         cText(room.getDescription());
+        ((EnemyRoom) room).enterRoom();
+        goblin = ((EnemyRoom) room).getEnemyList().getFirst();
+        gameState = GameState.COMBAT;
     } else if (room instanceof SafehouseRoom){
         cText("You are safe here crawler.");
     }
 }
 //Initiate combat
 private void startCombat() {
-    goblin.createGoblinMob();
-    cText("You have initiated combat with " + goblin.goblinName+ ".");
+//    goblin.createGoblinMob();
+    cText("You have initiated combat with " + goblin.getMonsterName()+ ".");
     cText("Here are your combat options: ");
     cText(combatCommands.toString());
     gameState = GameState.COMBAT;
@@ -267,10 +271,10 @@ private void attackCreature() {
 
 //Run From Creature. (Small chance of succeeding, failure will result in damage to player.)
 private void runAway() {
-    int deservedDmg = goblin.giveRandomGoblinDamage();
-    cText("You weak coward. It is a pathetic mob. " + goblin.goblinName + " stabbed you in the back for "
+    int deservedDmg = goblin.getDamage();
+    cText("You weak coward. It is a pathetic mob. " + goblin.getMonsterName() + " stabbed you in the back for "
             + deservedDmg + " points of damage.");
-    cText("Which you deserved. Now fight " + goblin.goblinName + " like a true player!");
+    cText("Which you deserved. Now fight " + goblin.getMonsterName() + " like a true player!");
     player.goblinDoesDamage(deservedDmg);
     isPlayerDead();
 }
@@ -281,8 +285,8 @@ private void useAnItemFromInventory() {
 }
 //Talk with Creature (Will have rare chance of having discussion with creature.)
 private void talkWithCreature() {
-    int deservedDmg = goblin.giveRandomGoblinDamage();
-    cText(goblin.goblinName + " looks at you like you are stupid and attacks you for " +
+    int deservedDmg = goblin.getDamage();
+    cText(goblin.getMonsterName() + " looks at you like you are stupid and attacks you for " +
             deservedDmg + " damage.");
     cText("Seriously, it is an unintelligent mob. And you are scary looking, what do you expect?");
     player.goblinDoesDamage(deservedDmg);
@@ -334,31 +338,31 @@ private void checkInventory() {
 
 //Cheat mode to display goblin information
 private void cheatMode() {
-    cText("Name: " + goblin.goblinName);
-    cText("Exp pool: " + goblin.getGoblinExpGiven());
-    cText("Health pool: " + goblin.getGoblinHealth());
+    cText("Name: " + goblin.getMonsterName());
+    cText("Exp pool: " + goblin.getEnemyExpGiven());
+    cText("Health pool: " + goblin.getEnemyHealth());
 }
 /** The fight function has been moved here instead of under the Player class where it did not belong.
  * Will need help on parsing in intel from player class and mob class to preform combat logic here.
  */
 private void fightTheMob(){
     int playerDamage = player.getRandomPlayerDamageWithoutWeapon();
-    goblin.playerDamagesGoblin(playerDamage);
-    boolean checkDeath = isMobDead(goblin.getGoblinHealth());
+    goblin.playerDamagesEnemy(playerDamage);
+    boolean checkDeath = isMobDead(goblin.getEnemyHealth());
     if (checkDeath) {
-        cText("You killed " + goblin.goblinName + "!");
-        cText("You monster! " + goblin.goblinName + " probably had a family! And you just killed them!");
-        cText("You at least got " + goblin.getGoblinExpGiven() + " experience for being a murderer. " +
+        cText("You killed " + goblin.getMonsterName() + "!");
+        cText("You monster! " + goblin.getMonsterName() + " probably had a family! And you just killed them!");
+        cText("You at least got " + goblin.getEnemyExpGiven() + " experience for being a murderer. " +
                 "I hope you are happy!");
-        player.addExpGivenFromKill(goblin.getGoblinExpGiven());
+        player.addExpGivenFromKill(goblin.getEnemyExpGiven());
         player.getExpRequiredForLeveling();
         gameState = GameState.REG_MENU;
     } else {
-        int randDmg = goblin.giveRandomGoblinDamage();
-        cText("You hit " + goblin.goblinName + " for " + playerDamage + " points!");
+        int randDmg = goblin.getDamage();
+        cText("You hit " + goblin.getMonsterName() + " for " + playerDamage + " points!");
         player.goblinDoesDamage(randDmg);
         isPlayerDead();
-        cText(goblin.goblinName + " hit you for " + randDmg + " points!");
+        cText(goblin.getMonsterName() + " hit you for " + randDmg + " points!");
         cText("Doesn't feel so good when they attack back, does it?");
     }
 }
