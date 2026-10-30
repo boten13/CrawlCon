@@ -8,6 +8,7 @@ import Util.GameState;
 import EnemyTypes.Goblin;
 import GameAssets.*;
 import Util.GUI;
+import Util.Snark;
 // TODO: Star imports are bad
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -37,6 +38,7 @@ private final String CHEAT = "CHEAT";
 Enemy goblin = null;
 private ArrayList<Enemy> enemiesInRoom = new ArrayList<>();
 
+Snark snark = new Snark();
 
 //Intiates and stores name given for player
 Player player;
@@ -95,15 +97,14 @@ void main() {
         });
             gameDisplayWindow.getInputUserCommand().grabFocus();
         //Start game by prompting for name
-        cText("SyS: Welcome Crawler to Terran's Dungeon Crawl!");
-        cText("SyS: Please enter your registered crawler name for your time inside the crawl!");
+        gameDisplayWindow.getOutputConsoleResponse().append(snark.snarkyWelcome());
         }
     });
 }
 //Process User Input
 private void processInput(String userCommand){
     //Display what user prompted
-    cText("\n>" + userCommand + "\n");
+    gameDisplayWindow.getOutputConsoleResponse().append("\n>" + userCommand + "\n");
     //Game state: Bounces between what is accessible at any given moment
     switch (gameState) {
         case GameState.WELCOME:
@@ -111,10 +112,7 @@ private void processInput(String userCommand){
             player = new Player(userCommand);
             //Moves case to 1
             gameState = GameState.REG_MENU;
-            cText("SyS: " + player.getPlayerName() + " is now your registered name!\n" +
-                    "Sys: Let's begin your practice crawl.\n" + playerCommands.toString() +
-                    "\nSyS: If you ever forget what the commands are for the menu, you can simply say the word 'MENU'" +
-                    "\nSyS: Remember that because I will not be telling you about it again.\n");
+            cText(snark.snarkyBeginningMenu(player.getPlayerName(), playerCommands));
             break;
         case GameState.REG_MENU: //Reg options case
             //Cheat Word Menu to display the menu again
@@ -124,8 +122,7 @@ private void processInput(String userCommand){
             }
             //Validates user input against all options available
             if (!actualMenu.contains(userCommand.toUpperCase())) {
-                cText("SyS: Please pay attention, crawler! I do not have all day to repeat myself for you.");
-                cText(userCommand + " is not a valid option. Try again.");
+                cText(snark.notAWord(userCommand, player.getPlayerName()));
                 gameState = GameState.REG_MENU;
             }
             //regular menu items displayed
@@ -155,7 +152,7 @@ private void processInput(String userCommand){
             } else {
                 cText("Fix the code related to this word: " + userCommand);
             }
-            cText("SyS: What would you like to do next, " + player.getPlayerName() + "?");
+            cText(snark.snarkyWait(player.getPlayerName()));
             break;
         case GameState.COMBAT://Combat start case
             //Hidden menu items in combat menu
@@ -172,8 +169,7 @@ private void processInput(String userCommand){
             }
             //if the input does not exist
             if (!actualCombatOptions.contains(userCommand.toUpperCase())) {
-                cText("Please pay attention, crawler! I do not have all day to repeat myself for you.");
-                cText(userCommand + " is not a valid option. Try again.");
+                cText(snark.notAWord(userCommand, player.getPlayerName()));
             }
             //menu items for combat that is displayed
             if (ATTACK_CREATURE.equalsIgnoreCase(userCommand)) {
@@ -192,7 +188,7 @@ private void processInput(String userCommand){
 }
 //Converts Strings to output on GameDisplay -- ShortHanded for ConvertText
 private void cText(String text) {
-    gameDisplayWindow.getOutputConsoleResponse().append("\n" + text);
+    gameDisplayWindow.getOutputConsoleResponse().append("\nSyS: " + text);
     gameDisplayWindow.getOutputConsoleResponse().setCaretPosition(gameDisplayWindow.getOutputConsoleResponse().getDocument().getLength());
 }
 // TODO: Move all direction mehthods into different directory
@@ -359,10 +355,7 @@ private void fightTheMob(){
     goblin.playerDamagesEnemy(playerDamage);
     boolean checkDeath = isMobDead(goblin.getEnemyHealth());
     if (checkDeath) {
-        cText("You killed " + goblin.getMonsterName() + "!");
-        cText("You monster! " + goblin.getMonsterName() + " probably had a family! And you just killed them!");
-        cText("You at least got " + goblin.getEnemyExpGiven() + " experience for being a murderer. " +
-                "I hope you are happy!");
+        snark.snarkyKill(goblin.getMonsterName(), player.getPlayerName());
         player.addExpGivenFromKill(goblin.getEnemyExpGiven());
         player.getExpRequiredForLeveling();
         gameState = GameState.REG_MENU;
