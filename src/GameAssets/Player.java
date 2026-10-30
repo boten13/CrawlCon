@@ -15,8 +15,12 @@ public class Player {
     private int playersHealth;
     private int playerDamage;
     Random rand = new Random();
-    int yLoc = 20;
-    int xLoc = 7;
+    //Testing set
+    int yLoc = 0;
+    int xLoc = 0;
+    //Actual set
+//    int yLoc = 20;
+//    int xLoc = 7;
     String playerIcon = "\uD83D\uDC64";
     int visibility;
 
@@ -26,7 +30,7 @@ public class Player {
         playerLevel = 1;
         playerExp = 0;
         playersHealth = 50;
-        visibility = 2;
+        visibility = 5;
     }
 
     //Checks the Player level based off exp points;

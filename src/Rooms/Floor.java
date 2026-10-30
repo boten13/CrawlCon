@@ -11,7 +11,22 @@ public class Floor {
     private Room[][] map;
 
     public Floor() {
-       map = generateMap();
+//       map = generateMap();
+        map = generateTestMap();
+    }
+    //for testing purposes cause fuck walking
+    private Room[][] generateTestMap() {
+        yMax = 2;
+        xMax = 5;
+        Room[][] map = new Room[yMax][xMax];
+        for (int i = 0; i < map.length; i++) {
+            Arrays.fill(map[i], new EmptyRoom());
+        }
+        map[1][1] = new EnemyRoom("Goblin");
+        map[1][2] = new EnemyRoom("Hobgoblin");
+        map[1][3] = new SafehouseRoom();
+        map[1][4] = new Wall();
+        return map;
     }
     private Room[][] generateMap() {
         yMax = 21;
@@ -151,7 +166,7 @@ public class Floor {
         map[16][11] = new Wall();
         map[18][11] = new Wall();
         map[19][11] = new Wall();
-//        map[20][11] = new Wall();
+        map[20][11] = new Wall();
         map[0][12] = new Wall();
         map[1][12] = new Wall();
         map[7][12] = new Wall();
@@ -225,7 +240,6 @@ public class Floor {
         map[9][20] = new Wall();
         map[11][20] = new Wall();
         map[19][20] = new Wall();
-
         return map;
     }
 
