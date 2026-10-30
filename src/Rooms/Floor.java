@@ -151,7 +151,7 @@ public class Floor {
         map[16][11] = new Wall();
         map[18][11] = new Wall();
         map[19][11] = new Wall();
-        map[20][11] = new Wall();
+//        map[20][11] = new Wall();
         map[0][12] = new Wall();
         map[1][12] = new Wall();
         map[7][12] = new Wall();

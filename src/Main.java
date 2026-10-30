@@ -35,6 +35,8 @@ private final String CHEAT = "CHEAT";
 
 //Generate goblin Object
 Enemy goblin = null;
+private ArrayList<Enemy> enemiesInRoom = new ArrayList<>();
+
 
 //Intiates and stores name given for player
 Player player;
@@ -250,7 +252,7 @@ public void enterRoom(int y, int x) {
         cText(room.getDescription());
         ((EnemyRoom) room).enterRoom();
         //TODO: Have more than one enemy populate correctly
-        goblin = ((EnemyRoom) room).getEnemyList().getFirst();
+        enemiesInRoom = ((EnemyRoom) room).getEnemyList();
         startCombat();
         //TODO: Method to turn enemy bodies into dead body objects and have noncombative states
     } else if (room instanceof SafehouseRoom){
@@ -260,10 +262,13 @@ public void enterRoom(int y, int x) {
 //Initiate combat
 private void startCombat() {
 //    goblin.createGoblinMob();
-    cText("You have initiated combat with " + goblin.getMonsterName()+ ".");
-    cText("Here are your combat options: ");
-    cText(combatCommands.toString());
-    gameState = GameState.COMBAT;
+    List<String> enemyNames = enemiesInRoom.stream()
+            .map(e -> e.getMonsterName())
+            .collect(Collectors.toList());
+        cText("You have initiated combat with " + String.join(", ", enemyNames) + ".");
+        cText("Here are your combat options: ");
+        cText(combatCommands.toString());
+        gameState = GameState.COMBAT;
 }
 
 //Attack Creature
