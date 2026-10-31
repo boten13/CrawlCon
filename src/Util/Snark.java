@@ -5,25 +5,23 @@ import java.util.List;
 import java.util.Random;
 
 public class Snark {
-    Random rand = new Random();
-    public Snark() {
-    }
-    public String snarkyWelcome() {
+    static Random rand = new Random();
+    public static String snarkyWelcome() {
         return ("System initializing..." + "\nWait a minute your planet has not started their Crawl..." +
                 "\nYou have found technology that you are not supposed to have yet, human." +
                 "\nWell, I am bored, so I will allow you to have a sample of what will happen when the Crawl is actually started."
-                + "\nI will let you play a something similar to an old school text based game. Ever heard of Zork?" +
+                + "\nI will let you play something similar to an old school text based game. Ever heard of Zork?" +
                 "\nI will explain things as you go along." +
                 "\nI shall refer to myself as SyS from now on to make it easier for you."
                 + "\nLet's start by having you register your name for this tiny crawl.");
     }
-    public String snarkyBeginningMenu(String name, ArrayList<String> playerCommands) {
+    public static String snarkyBeginningMenu(String name, ArrayList<String> playerCommands) {
         return (name + " is now your registered name!\n" +
                 "SyS: Let's begin your practice crawl.\n" + playerCommands.toString() +
                 "\nSyS: If you ever forget what the commands are for the menu, you can simply say the word 'MENU'" +
                 "\nSyS: Remember that because I will not be telling you about it again.\n");
     }
-    public String snarkyWait(String name) {
+    public static String snarkyWait(String name) {
         ArrayList<String> snarkyMessage = new ArrayList<>(
                 List.of("What are you waiting for, " + name + "?",
                         "Time is wasting, " + name + ".",
@@ -34,9 +32,9 @@ public class Snark {
                         "Are you not bored yet " + name + "? Because I am.")
         );
         int randomIndex = rand.nextInt(0, snarkyMessage.size());
-        return snarkyMessage.get(randomIndex);
+        return (snarkyMessage.get(randomIndex) + "\n");
     }
-    public String snarkyKill(String enemyName, String playerName) {
+    public static String snarkyKill(String enemyName, String playerName) {
         ArrayList<String> snarkyKill = new ArrayList<>(
                 List.of("Congratulations, you have killed " + enemyName + " hope you are proud of yourself.",
                         enemyName + " probably had a family. They were just working. You murderer.",
@@ -49,9 +47,9 @@ public class Snark {
                         "I hope you are happy commiting low level genocide, " + playerName)
         );
         int randomIndex = rand.nextInt(0, snarkyKill.size());
-        return snarkyKill.get(randomIndex);
+        return (snarkyKill.get(randomIndex) + "\n");
     }
-    public String notAWord(String word, String name) {
+    public static String notAWord(String word, String name) {
         ArrayList<String> notAWord = new ArrayList<>(
                 List.of("Please pay attention " + name + ", the word: " + word +
                         " is not something within the game I have built for you.",
@@ -63,7 +61,7 @@ public class Snark {
 
         );
         int randomIndex = rand.nextInt(0, notAWord.size());
-        return notAWord.get(randomIndex);
+        return (notAWord.get(randomIndex) + "\n");
     }
 }
 

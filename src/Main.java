@@ -5,10 +5,10 @@ import Rooms.Floor;
 import Rooms.Room;
 import Rooms.SafehouseRoom;
 import Util.GameState;
+import Util.Snark;
 import EnemyTypes.Goblin;
 import GameAssets.*;
 import Util.GUI;
-import Util.Snark;
 // TODO: Star imports are bad
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -18,9 +18,13 @@ import java.util.List;
 private final String REG_MENU = "MENU";
 private final String LOOK_AROUND = "LOOK";
 private final String DIRECTION_NORTH = "NORTH";
+private final String LAZY_N = "N";
 private final String DIRECTION_SOUTH = "SOUTH";
+private final String LAZY_S = "S";
 private final String DIRECTION_EAST = "EAST";
+private final String LAZY_E = "E";
 private final String DIRECTION_WEST = "WEST";
+private final String LAZY_W = "W";
 private final String MAP_CHECK = "MAP";
 private final String FIGHT = "FIGHT";
 private final String INVENTORY = "INVENTORY";
@@ -37,8 +41,6 @@ private final String CHEAT = "CHEAT";
 //Generate goblin Object
 Enemy goblin = null;
 private ArrayList<Enemy> enemiesInRoom = new ArrayList<>();
-
-Snark snark = new Snark();
 
 //Intiates and stores name given for player
 Player player;
@@ -63,7 +65,7 @@ private ArrayList<String> playerCommands = new ArrayList<>(
 //Actual Menu items with hidden functions
 private ArrayList<String> actualMenu = new ArrayList<>(
         List.of(DIRECTION_EAST, DIRECTION_NORTH, DIRECTION_SOUTH, DIRECTION_WEST, LOOK_AROUND, MAP_CHECK, FIGHT,
-                INVENTORY, CHARACTER_SHEET, END_GAME, REG_MENU)
+                INVENTORY, CHARACTER_SHEET, END_GAME, REG_MENU, LAZY_E, LAZY_W, LAZY_N, LAZY_S)
 );
 //List of commands the player is prompted to use while fighting.
 private ArrayList<String> combatCommands = new ArrayList<>(
@@ -97,7 +99,7 @@ void main() {
         });
             gameDisplayWindow.getInputUserCommand().grabFocus();
         //Start game by prompting for name
-        gameDisplayWindow.getOutputConsoleResponse().append(snark.snarkyWelcome());
+        gameDisplayWindow.getOutputConsoleResponse().append(Snark.snarkyWelcome());
         }
     });
 }
@@ -112,7 +114,7 @@ private void processInput(String userCommand){
             player = new Player(userCommand);
             //Moves case to 1
             gameState = GameState.REG_MENU;
-            cText(snark.snarkyBeginningMenu(player.getPlayerName(), playerCommands));
+            cText(Snark.snarkyBeginningMenu(player.getPlayerName(), playerCommands));
             break;
         case GameState.REG_MENU: //Reg options case
             //Cheat Word Menu to display the menu again
@@ -122,17 +124,17 @@ private void processInput(String userCommand){
             }
             //Validates user input against all options available
             if (!actualMenu.contains(userCommand.toUpperCase())) {
-                cText(snark.notAWord(userCommand, player.getPlayerName()));
+                cText(Snark.notAWord(userCommand, player.getPlayerName()));
                 gameState = GameState.REG_MENU;
             }
             //regular menu items displayed
-            if (DIRECTION_EAST.equalsIgnoreCase(userCommand)) {
+            if (DIRECTION_EAST.equalsIgnoreCase(userCommand) || LAZY_E.equalsIgnoreCase(userCommand)) {
                 headEast();
-            } else if (DIRECTION_NORTH.equalsIgnoreCase(userCommand)) {
+            } else if (DIRECTION_NORTH.equalsIgnoreCase(userCommand) || LAZY_N.equalsIgnoreCase(userCommand)) {
                 headNorth();
-            } else if (DIRECTION_SOUTH.equalsIgnoreCase(userCommand)) {
+            } else if (DIRECTION_SOUTH.equalsIgnoreCase(userCommand) || LAZY_S.equalsIgnoreCase(userCommand)) {
                 headSouth();
-            } else if (DIRECTION_WEST.equalsIgnoreCase(userCommand)) {
+            } else if (DIRECTION_WEST.equalsIgnoreCase(userCommand) || LAZY_W.equalsIgnoreCase(userCommand)) {
                 headWest();
             } else if (MAP_CHECK.equalsIgnoreCase(userCommand)) {
                 gameDisplayWindow.getOutputConsoleResponse().setText("Hope you remembered what I told you.");
@@ -150,9 +152,9 @@ private void processInput(String userCommand){
             } else if (END_GAME.equalsIgnoreCase(userCommand)) {
                 endGame();
             } else {
-                cText("Fix the code related to this word: " + userCommand);
+//                cText("Fix the code related to this word: " + userCommand);
             }
-            cText(snark.snarkyWait(player.getPlayerName()));
+            cText(Snark.snarkyWait(player.getPlayerName()));
             break;
         case GameState.COMBAT://Combat start case
             //Hidden menu items in combat menu
@@ -169,7 +171,7 @@ private void processInput(String userCommand){
             }
             //if the input does not exist
             if (!actualCombatOptions.contains(userCommand.toUpperCase())) {
-                cText(snark.notAWord(userCommand, player.getPlayerName()));
+                cText(Snark.notAWord(userCommand, player.getPlayerName()));
             }
             //menu items for combat that is displayed
             if (ATTACK_CREATURE.equalsIgnoreCase(userCommand)) {
@@ -181,7 +183,7 @@ private void processInput(String userCommand){
             } else if (TALK.equalsIgnoreCase(userCommand)) {
                 talkWithCreature();
             } else {
-                cText("Fix the code related to this word: " + userCommand);
+//                cText("Fix the code related to this word: " + userCommand);
             }
             break;
     }
@@ -355,7 +357,7 @@ private void fightTheMob(){
     goblin.playerDamagesEnemy(playerDamage);
     boolean checkDeath = isMobDead(goblin.getEnemyHealth());
     if (checkDeath) {
-        snark.snarkyKill(goblin.getMonsterName(), player.getPlayerName());
+        Snark.snarkyKill(goblin.getMonsterName(), player.getPlayerName());
         player.addExpGivenFromKill(goblin.getEnemyExpGiven());
         player.getExpRequiredForLeveling();
         gameState = GameState.REG_MENU;
