@@ -14,6 +14,7 @@ public class Player {
     private int neededExp;
     private int playersHealth;
     private int playerDamage;
+    private int playerMaxHeatlh = 50;
     Random rand = new Random();
     //Testing set
     int yLoc = 0;
@@ -36,6 +37,19 @@ public class Player {
     //Checks the Player level based off exp points;
     private void levelUp() {
         playerLevel++;
+        playerMaxHeatlh += (int) (playerMaxHeatlh * 0.27);
+    }
+    //Checks players current health vs max HP pool
+    public String healthCheck() {
+        return ("Your health is " + playersHealth + " out of " + playerMaxHeatlh);
+    }
+    //Reset HP when resting
+    public void resetHealth() {
+        playersHealth = playerMaxHeatlh;
+    }
+    //HP restore with health potion
+    public void restoreHealth(int potion) {
+        playersHealth += potion;
     }
 
     //Checks exp needed to level;
@@ -73,7 +87,7 @@ public class Player {
     }
 
     //Damage to player from goblin logic
-    public int goblinDoesDamage(int goblinDamage){
+    public int enemyDoesDamage(int goblinDamage){
         playersHealth -= goblinDamage;
         return playersHealth;
     }

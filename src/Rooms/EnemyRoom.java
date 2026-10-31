@@ -2,8 +2,10 @@ package Rooms;
 
 import EnemyTypes.Enemy;
 import EnemyTypes.EnemyFactory;
+import Util.EnemyUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 //TODO: Change room icon to something different if room has been cleared
 public class EnemyRoom extends Room {
@@ -18,8 +20,14 @@ public class EnemyRoom extends Room {
         if (!hasEnteredRoom) {
             hasEnteredRoom = true;
             int x = rand.nextInt(1, 6);
+            ArrayList<String> names = EnemyUtil.hobNames;
             for (int i = 0; i < x; i++) {
-                roomEncounter.add(EnemyFactory.createNewHobgoblin());
+                int y = rand.nextInt(0, names.size());
+                String name = names.get(y);
+                Enemy enemy = EnemyFactory.createNewHobgoblin();
+                enemy.setEnemyName(name);
+                roomEncounter.add(enemy);
+                names.remove(name);
             }
         }
     }

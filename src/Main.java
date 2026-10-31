@@ -6,7 +6,6 @@ import Rooms.Room;
 import Rooms.SafehouseRoom;
 import Util.GameState;
 import Util.Snark;
-import EnemyTypes.Goblin;
 import GameAssets.*;
 import Util.GUI;
 // TODO: Star imports are bad
@@ -257,13 +256,24 @@ public void enterRoom(int y, int x) {
         cText("You are safe here crawler.");
     }
 }
-//Initiate combat
-private void startCombat() {
-//    goblin.createGoblinMob();
+//Collect enemy names list
+private List<String> enemyNames() {
     List<String> enemyNames = enemiesInRoom.stream()
             .map(e -> e.getMonsterName())
             .collect(Collectors.toList());
-        cText("You have initiated combat with " + String.join(", ", enemyNames) + ".");
+    return enemyNames;
+}
+//Collect enemy damages
+//private List<Integer> enemyDamage() {
+//    List<Integer> enemyDamage = enemiesInRoom.stream()
+//            .map(e -> e.getDamage())
+//            .collect(Collectors.toList());
+//    return enemyDamage;
+//}
+//Initiate combat
+private void startCombat() {
+//    goblin.createGoblinMob();
+        cText("You have initiated combat with " + String.join(", ", enemyNames()) + ".");
         cText("Here are your combat options: ");
         cText(combatCommands.toString());
         gameState = GameState.COMBAT;
@@ -271,32 +281,32 @@ private void startCombat() {
 
 //Attack Creature
 private void attackCreature() {
-    fightTheMob();
+//    fightTheMob();
+
     player.getExpRequiredForLeveling();
 }
-
+//TODO ADD SNARK TO THIS
 //Run From Creature. (Small chance of succeeding, failure will result in damage to player.)
 private void runAway() {
-    int deservedDmg = goblin.getDamage();
-    cText("You weak coward. It is a pathetic mob. " + goblin.getMonsterName() + " stabbed you in the back for "
-            + deservedDmg + " points of damage.");
-    cText("Which you deserved. Now fight " + goblin.getMonsterName() + " like a true player!");
-    player.goblinDoesDamage(deservedDmg);
-    isPlayerDead();
+    for (int i = 0; i < enemiesInRoom.size(); i++) {
+        cText(enemiesInRoom.get(i).getMonsterName() +" does " + enemiesInRoom.get(i).getDamage() + " damage.");
+        player.enemyDoesDamage(enemiesInRoom.get(i).getDamage());
+        isPlayerDead();
+    }
 }
 //Use an item in your inventory. Pull up inventory list.
 private void useAnItemFromInventory() {
     cText("You are sitting there rummaging around your pockets as if you have anything in them.");
     cText("You don't. You just look stupid.");
 }
-//Talk with Creature (Will have rare chance of having discussion with creature.)
+//TODO ADD SNARK TO THIS
+//Talk with Creature (Will have rare chance of having discussion with creature.)... MAYBE
 private void talkWithCreature() {
-    int deservedDmg = goblin.getDamage();
-    cText(goblin.getMonsterName() + " looks at you like you are stupid and attacks you for " +
-            deservedDmg + " damage.");
-    cText("Seriously, it is an unintelligent mob. And you are scary looking, what do you expect?");
-    player.goblinDoesDamage(deservedDmg);
-    isPlayerDead();
+    for (int i = 0; i < enemiesInRoom.size(); i++) {
+        cText(enemiesInRoom.get(i).getMonsterName() + " does " + enemiesInRoom.get(i).getDamage() + " damage.");
+        player.enemyDoesDamage(enemiesInRoom.get(i).getDamage());
+        isPlayerDead();
+    }
 }
 //Checks the bounds of the map size
 private boolean isOnMap(int y, int x) {
@@ -329,7 +339,7 @@ private void characterSheet() {
     if (player.getPlayerExp() == 0) {
         cText("You literally just got in here, go fight something you dullard.");
     } else {
-        cText("You have " + player.getPlayersHealth() + " health points.");
+        cText("You have " + player.healthCheck() + " health points.");
         cText("You need " + player.getNeededExp() + " experience points before leveling up.");
         cText("You are currently level " + player.getPlayerLevel() + ".");
         cText("What did you expect, we are still developing the program.");
@@ -364,7 +374,7 @@ private void fightTheMob(){
     } else {
         int randDmg = goblin.getDamage();
         cText("You hit " + goblin.getMonsterName() + " for " + playerDamage + " points!");
-        player.goblinDoesDamage(randDmg);
+        player.enemyDoesDamage(randDmg);
         isPlayerDead();
         cText(goblin.getMonsterName() + " hit you for " + randDmg + " points!");
         cText("Doesn't feel so good when they attack back, does it?");
