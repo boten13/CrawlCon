@@ -174,7 +174,8 @@ private void processInput(String userCommand){
             }
             //menu items for combat that is displayed
             if (ATTACK_CREATURE.equalsIgnoreCase(userCommand)) {
-                attackCreature();
+                cText("Choose who to attack: " + String.join(", ", enemyNames()) + ".");
+                gameState = GameState.CHOOSE_ENEMY;
             } else if (RUN.equalsIgnoreCase(userCommand)) {
                 runAway();
             } else if (USE_ITEM.equalsIgnoreCase(userCommand)) {
@@ -183,6 +184,37 @@ private void processInput(String userCommand){
                 talkWithCreature();
             } else {
 //                cText("Fix the code related to this word: " + userCommand);
+            }
+            break;
+        case GameState.CHOOSE_ENEMY://Combat for multi-enemy-rooms
+            cText("Choose who to attack: " + String.join(", ", enemyNames()) + ".");
+            List<Enemy> copyList = enemiesInRoom;
+            if (!enemiesInRoom.isEmpty()) {
+            for (Enemy enemy: copyList) {
+                String enemyName = enemy.getMonsterName();
+                if (userCommand.equalsIgnoreCase(enemyName)) {
+                    int pDmg = 50;
+                    int eDmg = enemy.getDamage();
+                    enemy.playerDamagesEnemy(pDmg);
+                    player.enemyDoesDamage(eDmg);
+                    cText(enemy.getMonsterName() + " does " + eDmg + " to you.");
+                    cText(player.getPlayerName() + " does " + pDmg + " to " + enemy.getMonsterName());
+                    cText(player.healthCheck());
+                    boolean checkDeath = isMobDead(enemy.getEnemyHealth());
+                    isPlayerDead();
+                    if (checkDeath) {
+                        cText(Snark.snarkyKill(enemyName, player.getPlayerName()));
+                        player.addExpGivenFromKill(enemy.getEnemyExpGiven());
+                        player.getExpRequiredForLeveling();
+                        enemiesInRoom.remove(enemy);
+                    } else {
+                        gameState = GameState.CHOOSE_ENEMY;
+                    }
+                }
+            }
+                gameState = GameState.COMBAT;
+        } else {
+                gameState = GameState.REG_MENU;
             }
             break;
     }
@@ -279,11 +311,9 @@ private void startCombat() {
         gameState = GameState.COMBAT;
 }
 
-//Attack Creature
-private void attackCreature() {
-//    fightTheMob();
-
-    player.getExpRequiredForLeveling();
+//Combat system for inside an enemy-room
+private void enemyRoomCombat() {
+    cText("Choose who to attack: " + String.join(", ", enemyNames()) + ".");
 }
 //TODO ADD SNARK TO THIS
 //Run From Creature. (Small chance of succeeding, failure will result in damage to player.)
@@ -362,6 +392,7 @@ private void cheatMode() {
  * Will need help on parsing in intel from player class and mob class to preform combat logic here.
  */
 //TODO: Needs to be refactored to display entire list of enemies and choose which one to fight
+//Combat system for instead the hallways, i.e. rats only. Needs to be updated.
 private void fightTheMob(){
     int playerDamage = player.getRandomPlayerDamageWithoutWeapon();
     goblin.playerDamagesEnemy(playerDamage);
