@@ -13,7 +13,7 @@ public class Snark {
                 + "\nI will let you play something similar to an old school text based game. Ever heard of Zork?" +
                 "\nI will explain things as you go along." +
                 "\nI shall refer to myself as SyS from now on to make it easier for you."
-                + "\nLet's start by having you register your name for this tiny crawl.");
+                + "\nLet's start by having you register your name for this tiny crawl.\n");
     }
     public static String snarkyBeginningMenu(String name, ArrayList<String> playerCommands) {
         return (name + " is now your registered name!\n" +

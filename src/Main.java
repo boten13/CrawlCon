@@ -174,7 +174,7 @@ private void processInput(String userCommand){
             }
             //menu items for combat that is displayed
             if (ATTACK_CREATURE.equalsIgnoreCase(userCommand)) {
-                cText("Choose who to attack: " + String.join(", ", enemyNames()) + ".");
+                cText("Choose who to attack: " + String.join(", ", enemyNames()) + ".\n");
                 gameState = GameState.CHOOSE_ENEMY;
             } else if (RUN.equalsIgnoreCase(userCommand)) {
                 runAway();
@@ -187,35 +187,7 @@ private void processInput(String userCommand){
             }
             break;
         case GameState.CHOOSE_ENEMY://Combat for multi-enemy-rooms
-            cText("Choose who to attack: " + String.join(", ", enemyNames()) + ".");
-            List<Enemy> copyList = enemiesInRoom;
-            if (!enemiesInRoom.isEmpty()) {
-            for (Enemy enemy: copyList) {
-                String enemyName = enemy.getMonsterName();
-                if (userCommand.equalsIgnoreCase(enemyName)) {
-                    int pDmg = 50;
-                    int eDmg = enemy.getDamage();
-                    enemy.playerDamagesEnemy(pDmg);
-                    player.enemyDoesDamage(eDmg);
-                    cText(enemy.getMonsterName() + " does " + eDmg + " to you.");
-                    cText(player.getPlayerName() + " does " + pDmg + " to " + enemy.getMonsterName());
-                    cText(player.healthCheck());
-                    boolean checkDeath = isMobDead(enemy.getEnemyHealth());
-                    isPlayerDead();
-                    if (checkDeath) {
-                        cText(Snark.snarkyKill(enemyName, player.getPlayerName()));
-                        player.addExpGivenFromKill(enemy.getEnemyExpGiven());
-                        player.getExpRequiredForLeveling();
-                        enemiesInRoom.remove(enemy);
-                    } else {
-                        gameState = GameState.CHOOSE_ENEMY;
-                    }
-                }
-            }
-                gameState = GameState.COMBAT;
-        } else {
-                gameState = GameState.REG_MENU;
-            }
+            enemyRoomCombat();
             break;
     }
 }
@@ -313,7 +285,32 @@ private void startCombat() {
 
 //Combat system for inside an enemy-room
 private void enemyRoomCombat() {
-    cText("Choose who to attack: " + String.join(", ", enemyNames()) + ".");
+    if (!enemiesInRoom.isEmpty()) {
+        for (Enemy enemy: new ArrayList<>(enemiesInRoom)) {
+            String enemyName = enemy.getMonsterName();
+            if (userCommand.equalsIgnoreCase(enemyName)) {
+                int pDmg = 50;
+                int eDmg = enemy.getDamage();
+                enemy.playerDamagesEnemy(pDmg);
+                player.enemyDoesDamage(eDmg);
+                cText(enemy.getMonsterName() + " does " + eDmg + " to you.");
+                cText(player.getPlayerName() + " does " + pDmg + " to " + enemy.getMonsterName());
+                cText(player.healthCheck());
+                boolean checkDeath = isMobDead(enemy.getEnemyHealth());
+                isPlayerDead();
+                if (checkDeath) {
+                    cText(Snark.snarkyKill(enemyName, player.getPlayerName()));
+                    player.addExpGivenFromKill(enemy.getEnemyExpGiven());
+                    player.getExpRequiredForLeveling();
+                    enemiesInRoom.removeIf(enemiesInRoom-> enemiesInRoom.equals(enemy));
+                    if (enemiesInRoom.isEmpty()) {
+                        cText("Congrats, you killed them all!");
+                        gameState = GameState.REG_MENU;
+                    }
+                }
+            }
+        }
+    }
 }
 //TODO ADD SNARK TO THIS
 //Run From Creature. (Small chance of succeeding, failure will result in damage to player.)
