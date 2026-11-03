@@ -282,18 +282,18 @@ private void startCombat() {
         cText(combatCommands.toString());
         gameState = GameState.COMBAT;
 }
-
+//TODO: Figure out linear combat system where target gets damaged then rest of room attacks
 //Combat system for inside an enemy-room
 private void enemyRoomCombat() {
     if (!enemiesInRoom.isEmpty()) {
         for (Enemy enemy: new ArrayList<>(enemiesInRoom)) {
             String enemyName = enemy.getMonsterName();
-            if (userCommand.equalsIgnoreCase(enemyName)) {
+            if (enemyName.equalsIgnoreCase(userCommand)) {
                 int pDmg = 50;
-                int eDmg = enemy.getDamage();
+                int enemyDamage = enemy.getDamage();
                 enemy.playerDamagesEnemy(pDmg);
-                player.enemyDoesDamage(eDmg);
-                cText(enemy.getMonsterName() + " does " + eDmg + " to you.");
+                player.enemyDoesDamage(enemyDamage);
+                cText(enemy.getMonsterName() + " does " + enemyDamage + " to you.");
                 cText(player.getPlayerName() + " does " + pDmg + " to " + enemy.getMonsterName());
                 cText(player.healthCheck());
                 boolean checkDeath = isMobDead(enemy.getEnemyHealth());
