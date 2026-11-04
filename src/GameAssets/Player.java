@@ -70,6 +70,8 @@ public class Player {
             levelUp();
         }
     }
+
+    //Chance to dodge an attack
     public boolean doesPlayerDodge() {
         int dodges = rand.nextInt(0, 101);
         if (playerDodgeChance <= dodges) {
@@ -77,6 +79,12 @@ public class Player {
         } else {
             return false;
         }
+    }
+
+    //Checks to see if player initiates combat or enemies when walking into a room
+    public boolean playerInitiatesCombat() {
+        int initiates = rand.nextInt(0, 100);
+        return (initiates >= 50);
     }
 
     public int getVisibility() {

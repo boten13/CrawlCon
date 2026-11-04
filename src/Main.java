@@ -273,7 +273,7 @@ private void startCombat() {
         cText(combatCommands.toString());
         gameState = GameState.COMBAT;
 }
-//TODO: ADD PLAYER DODGE CHANCE, ADD WHO INTIATES COMBAT
+//TODO: ADD WHO INTIATES COMBAT
 //Combat system for inside an enemy-room
 private void enemyRoomCombat() {
     if (enemiesInRoom.isEmpty()) {
