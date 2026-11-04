@@ -5,3 +5,4 @@ public class Hallway extends Room {
         super("   ", "Nothing to see here.", false);
     }
 }
+//TODO: Have chance of gen rats to smosh with toesys

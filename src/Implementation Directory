@@ -1,19 +1,15 @@
 TODO:
- -Set up WALL rooms: Done
- -Set up HALLWAY rooms: Done
- -Set up Player Directions: Done
- -Set up Player Movement Methods: Done
- -Set up Player Location display in map: Done
- -Set up player known location in Player: Done
- -Set up new Enemy Types
- -Set up Menu display for choice of which enemy to attack when confronting multiple enemies
+ -Set up new Rat Enemy Type and have combat system for them in the hallway (SMOSH WITH TOESYS).
  -Set up inventory items
  -Set up loot drops
- -Create player inventory in player class
+ -Set up Gold counter
  -Method to pull loot based off enemy kill
  -Create 3 dif types boss
- -Finalize actual map layout : Mostly Done
  -Fix typing while looking at map (corrupts game at moment)
- -Create Snark Package to hold thousands of lines of snark, with methods to random pull.
+ -Create Snark Package to hold thousands of lines of snark, with methods to random pull. - ADD MORE
+ -Add Bopca to safe room to handle buying food and resting to restore health.
+ -Add in time manipulation and constraints.
+ -Add Stairs to map, with key restraints
+ -Block backside of rooms so you can not enter dead space.
  (Do you want loop drops or items to collect off floor?)
 
