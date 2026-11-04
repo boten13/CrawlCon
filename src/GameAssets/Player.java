@@ -15,6 +15,7 @@ public class Player {
     private int playersHealth;
     private int playerDamage;
     private int playerMaxHeatlh = 50;
+    private int playerDodgeChance = 15;
     Random rand = new Random();
     //Testing set
     int yLoc = 0;
@@ -67,6 +68,14 @@ public class Player {
             neededExp = (requiredExp - playerExp);
         } else {
             levelUp();
+        }
+    }
+    public boolean doesPlayerDodge() {
+        int dodges = rand.nextInt(0, 101);
+        if (playerDodgeChance <= dodges) {
+            return true;
+        } else {
+            return false;
         }
     }
 

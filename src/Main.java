@@ -41,7 +41,7 @@ private final String CHEAT = "CHEAT";
 Enemy goblin = null;
 private ArrayList<Enemy> enemiesInRoom = new ArrayList<>();
 
-//Intiates and stores name given for player
+//Initiates and stores name given for player
 Player player;
 
 //Stores user Input from TextField
@@ -150,8 +150,6 @@ private void processInput(String userCommand){
                 lookAround();
             } else if (END_GAME.equalsIgnoreCase(userCommand)) {
                 endGame();
-            } else {
-//                cText("Fix the code related to this word: " + userCommand);
             }
             cText(Snark.snarkyWait(player.getPlayerName()));
             break;
@@ -182,8 +180,6 @@ private void processInput(String userCommand){
                 useAnItemFromInventory();
             } else if (TALK.equalsIgnoreCase(userCommand)) {
                 talkWithCreature();
-            } else {
-//                cText("Fix the code related to this word: " + userCommand);
             }
             break;
         case GameState.CHOOSE_ENEMY://Combat for multi-enemy-rooms
@@ -269,13 +265,6 @@ private List<String>enemyNames() {
             .collect(Collectors.toList());
     return enemyNames;
 }
-//Collect enemy damages
-//private List<Integer> enemyDamage() {
-//    List<Integer> enemyDamage = enemiesInRoom.stream()
-//            .map(e -> e.getDamage())
-//            .collect(Collectors.toList());
-//    return enemyDamage;
-//}
 //Initiate combat
 private void startCombat() {
 //    goblin.createGoblinMob();
@@ -309,10 +298,14 @@ private void enemyRoomCombat() {
     for (Enemy enemy: enemiesInRoom) {
         String enemyName = enemy.getMonsterName();
         int enemyDamage = enemy.getDamage();
-        player.enemyDoesDamage(enemyDamage);
-        cText(enemyName + " does " + enemyDamage + " to " + player.getPlayerName());
-        isPlayerDead();
-        cText(player.healthCheck());
+        if (!player.doesPlayerDodge()) {
+            player.enemyDoesDamage(enemyDamage);
+            cText(enemyName + " does " + enemyDamage + " to " + player.getPlayerName());
+            isPlayerDead();
+            cText(player.healthCheck());
+        } else {
+            cText(enemyName + " missed their attack!");
+        }
     }
     if (!enemiesInRoom.isEmpty()) {
         gameState = GameState.COMBAT;
@@ -390,12 +383,10 @@ private void characterSheet() {
         cText("Go fight something, you plebian.");
     }
 }
-
 //Check Character Inventory
 private void checkInventory() {
     cText("This still needs to be implemented. You have no inventory at this time. Get over it.");
 }
-
 //Cheat mode to display goblin information
 private void cheatMode() {
     cText("Name: " + goblin.getMonsterName());
@@ -405,27 +396,6 @@ private void cheatMode() {
 /** The fight function has been moved here instead of under the Player class where it did not belong.
  * Will need help on parsing in intel from player class and mob class to preform combat logic here.
  */
-//TODO: Needs to be refactored to display entire list of enemies and choose which one to fight
-//Combat system for instead the hallways, i.e. rats only. Needs to be updated.
-//private void fightTheMob(){
-//    int playerDamage = player.getRandomPlayerDamageWithoutWeapon();
-//    goblin.playerDamagesEnemy(playerDamage);
-//    boolean checkDeath = isMobDead(enemy);
-//    if (checkDeath) {
-//        Snark.snarkyKill(goblin.getMonsterName(), player.getPlayerName());
-//        player.addExpGivenFromKill(goblin.getEnemyExpGiven());
-//        player.getExpRequiredForLeveling();
-//        gameState = GameState.REG_MENU;
-//    } else {
-//        int randDmg = goblin.getDamage();
-//        cText("You hit " + goblin.getMonsterName() + " for " + playerDamage + " points!");
-//        player.enemyDoesDamage(randDmg);
-//        isPlayerDead();
-//        cText(goblin.getMonsterName() + " hit you for " + randDmg + " points!");
-//        cText("Doesn't feel so good when they attack back, does it?");
-//    }
-//}
-//Checks if player has died, displays pop up window if yes
 public void isPlayerDead() {
     if (player.getPlayersHealth() < 1) {
         JOptionPane.showMessageDialog(null, "You have died");
