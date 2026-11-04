@@ -74,7 +74,6 @@ private ArrayList<String> combatCommands = new ArrayList<>(
 private ArrayList<String> actualCombatOptions = new ArrayList<>(
         List.of(ATTACK_CREATURE, RUN, USE_ITEM, TALK, CHEAT)
 );
-// TODO: Cleanup project structure--Everything is currently in Util dir
 void main() {
     // Initiates map
     currentLevel = new Floor();
@@ -389,18 +388,18 @@ private void checkInventory() {
 }
 //Cheat mode to display goblin information
 private void cheatMode() {
-    cText("Name: " + goblin.getMonsterName());
-    cText("Exp pool: " + goblin.getEnemyExpGiven());
-    cText("Health pool: " + goblin.getEnemyHealth());
+    for (Enemy enemy : enemiesInRoom) {
+        cText(enemy.getEnemyType().toString() + " " + enemy.getEnemyHealth() + " " + enemy.getMonsterName());
+    }
 }
 /** The fight function has been moved here instead of under the Player class where it did not belong.
  * Will need help on parsing in intel from player class and mob class to preform combat logic here.
  */
 public void isPlayerDead() {
     if (player.getPlayersHealth() < 1) {
+        cText(player.getPlayerName() + " has died. I am actually shocked because the developers made this game pretty easy.");
         JOptionPane.showMessageDialog(null, "You have died");
         System.exit(0);
-        cText(player.getPlayerName() + " has died. I am actually shocked because the developers made this game pretty easy.");
     }
 }
 //Checks if the mob has died

@@ -1,7 +1,7 @@
 package Rooms;
 
-public class EmptyRoom extends Room {
-    public EmptyRoom() {
+public class Hallway extends Room {
+    public Hallway() {
         super("   ", "Nothing to see here.", false);
     }
 }

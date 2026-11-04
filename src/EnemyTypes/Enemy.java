@@ -42,6 +42,7 @@ public class Enemy {
         return description;
     }
 
+
     public int getDamage() {
         int damage = rand.nextInt(damageMin, damageMax);
         return damage;

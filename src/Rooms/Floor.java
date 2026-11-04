@@ -1,9 +1,6 @@
 package Rooms;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 
 public class Floor {
     private int xMax;
@@ -20,7 +17,7 @@ public class Floor {
         xMax = 5;
         Room[][] map = new Room[yMax][xMax];
         for (int i = 0; i < map.length; i++) {
-            Arrays.fill(map[i], new EmptyRoom());
+            Arrays.fill(map[i], new Hallway());
         }
         map[1][1] = new EnemyRoom("Goblin");
         map[1][2] = new EnemyRoom("Hobgoblin");
@@ -33,7 +30,7 @@ public class Floor {
         xMax = 21;
         Room[][] map = new Room[yMax][xMax];
         for (int i = 0; i < map.length; i++) {
-            Arrays.fill(map[i], new EmptyRoom());
+            Arrays.fill(map[i], new Hallway());
         }
         map[15][2] = new SafehouseRoom();
         map[13][14] = new SafehouseRoom();
