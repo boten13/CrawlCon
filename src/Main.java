@@ -288,7 +288,12 @@ private void enemyRoomCombat() {
     if (!enemiesInRoom.isEmpty()) {
         for (Enemy enemy: new ArrayList<>(enemiesInRoom)) {
             String enemyName = enemy.getMonsterName();
-            if (enemyName.equalsIgnoreCase(userCommand)) {
+            if (!userCommand.equalsIgnoreCase(enemyName)){
+                int damage = enemy.getDamage();
+                cText(enemyName + " does " + damage);
+                player.enemyDoesDamage(damage);
+                isPlayerDead();
+            } else if (enemyName.equalsIgnoreCase(userCommand)) {
                 int pDmg = 50;
                 int enemyDamage = enemy.getDamage();
                 enemy.playerDamagesEnemy(pDmg);
@@ -296,13 +301,13 @@ private void enemyRoomCombat() {
                 cText(enemy.getMonsterName() + " does " + enemyDamage + " to you.");
                 cText(player.getPlayerName() + " does " + pDmg + " to " + enemy.getMonsterName());
                 cText(player.healthCheck());
-                boolean checkDeath = isMobDead(enemy.getEnemyHealth());
                 isPlayerDead();
-                if (checkDeath) {
+                if (isMobDead(enemy)) {
                     cText(Snark.snarkyKill(enemyName, player.getPlayerName()));
                     player.addExpGivenFromKill(enemy.getEnemyExpGiven());
                     player.getExpRequiredForLeveling();
                     enemiesInRoom.removeIf(enemiesInRoom-> enemiesInRoom.equals(enemy));
+                    gameState = GameState.COMBAT;
                     if (enemiesInRoom.isEmpty()) {
                         cText("Congrats, you killed them all!");
                         gameState = GameState.REG_MENU;
@@ -390,35 +395,35 @@ private void cheatMode() {
  */
 //TODO: Needs to be refactored to display entire list of enemies and choose which one to fight
 //Combat system for instead the hallways, i.e. rats only. Needs to be updated.
-private void fightTheMob(){
-    int playerDamage = player.getRandomPlayerDamageWithoutWeapon();
-    goblin.playerDamagesEnemy(playerDamage);
-    boolean checkDeath = isMobDead(goblin.getEnemyHealth());
-    if (checkDeath) {
-        Snark.snarkyKill(goblin.getMonsterName(), player.getPlayerName());
-        player.addExpGivenFromKill(goblin.getEnemyExpGiven());
-        player.getExpRequiredForLeveling();
-        gameState = GameState.REG_MENU;
-    } else {
-        int randDmg = goblin.getDamage();
-        cText("You hit " + goblin.getMonsterName() + " for " + playerDamage + " points!");
-        player.enemyDoesDamage(randDmg);
-        isPlayerDead();
-        cText(goblin.getMonsterName() + " hit you for " + randDmg + " points!");
-        cText("Doesn't feel so good when they attack back, does it?");
-    }
-}
+//private void fightTheMob(){
+//    int playerDamage = player.getRandomPlayerDamageWithoutWeapon();
+//    goblin.playerDamagesEnemy(playerDamage);
+//    boolean checkDeath = isMobDead(enemy);
+//    if (checkDeath) {
+//        Snark.snarkyKill(goblin.getMonsterName(), player.getPlayerName());
+//        player.addExpGivenFromKill(goblin.getEnemyExpGiven());
+//        player.getExpRequiredForLeveling();
+//        gameState = GameState.REG_MENU;
+//    } else {
+//        int randDmg = goblin.getDamage();
+//        cText("You hit " + goblin.getMonsterName() + " for " + playerDamage + " points!");
+//        player.enemyDoesDamage(randDmg);
+//        isPlayerDead();
+//        cText(goblin.getMonsterName() + " hit you for " + randDmg + " points!");
+//        cText("Doesn't feel so good when they attack back, does it?");
+//    }
+//}
 //Checks if player has died, displays pop up window if yes
 public void isPlayerDead() {
-    if (player.getPlayersHealth() < 0) {
+    if (player.getPlayersHealth() < 1) {
         JOptionPane.showMessageDialog(null, "You have died");
         System.exit(0);
         cText(player.getPlayerName() + " has died. I am actually shocked because the developers made this game pretty easy.");
     }
 }
 //Checks if the mob has died
-private boolean isMobDead(int goblinHeatlh) {
-    if (goblinHeatlh < 1) {
+private boolean isMobDead(Enemy enemy) {
+    if (enemy.getEnemyHealth() < 1) {
         return true;
     } else {
         return false;
