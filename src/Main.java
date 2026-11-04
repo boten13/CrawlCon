@@ -288,7 +288,7 @@ private void enemyRoomCombat() {
         cText(Snark.notAWord(userCommand, player.getPlayerName()));
         return;
     }
-    targetCombat(target, target.getDamage());
+    targetCombat(target);
     boolean isDead = isMobDead(target);
     if (isDead) {
         deadEnemies.add(target);
@@ -314,8 +314,8 @@ private void enemyRoomCombat() {
         gameState = GameState.REG_MENU;
     }
 }
-private void targetCombat(Enemy enemy, int enemyDamage) {
-    int pDmg = 5;
+private void targetCombat(Enemy enemy) {
+    int pDmg = player.getRandomPlayerDamageWithoutWeapon();
     enemy.playerDamagesEnemy(pDmg);
     cText(player.getPlayerName() + " does " + pDmg + " to " + enemy.getMonsterName());
     cText(player.healthCheck());
