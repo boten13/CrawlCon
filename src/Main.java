@@ -261,7 +261,7 @@ public void enterRoom(int y, int x) {
     }
 }
 //Collect enemy names list
-private List<String> enemyNames() {
+private List<String>enemyNames() {
     List<String> enemyNames = enemiesInRoom.stream()
             .map(e -> e.getMonsterName())
             .collect(Collectors.toList());
