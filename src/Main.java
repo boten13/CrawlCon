@@ -286,16 +286,12 @@ private void startCombat() {
 //Combat system for inside an enemy-room
 private void enemyRoomCombat() {
     if (!enemiesInRoom.isEmpty()) {
-        for (Enemy enemy: new ArrayList<>(enemiesInRoom)) {
+        ArrayList<Enemy> deadEnemies = new ArrayList<>();
+        for (Enemy enemy: enemiesInRoom) {
             String enemyName = enemy.getMonsterName();
-            if (!userCommand.equalsIgnoreCase(enemyName)){
-                int damage = enemy.getDamage();
-                cText(enemyName + " does " + damage);
-                player.enemyDoesDamage(damage);
-                isPlayerDead();
-            } else if (enemyName.equalsIgnoreCase(userCommand)) {
+            int enemyDamage = enemy.getDamage();
+            if (enemyName.equalsIgnoreCase(userCommand)) {
                 int pDmg = 50;
-                int enemyDamage = enemy.getDamage();
                 enemy.playerDamagesEnemy(pDmg);
                 player.enemyDoesDamage(enemyDamage);
                 cText(enemy.getMonsterName() + " does " + enemyDamage + " to you.");
@@ -306,7 +302,7 @@ private void enemyRoomCombat() {
                     cText(Snark.snarkyKill(enemyName, player.getPlayerName()));
                     player.addExpGivenFromKill(enemy.getEnemyExpGiven());
                     player.getExpRequiredForLeveling();
-                    enemiesInRoom.removeIf(enemiesInRoom-> enemiesInRoom.equals(enemy));
+                    deadEnemies.add(enemy);
                     gameState = GameState.COMBAT;
                     if (enemiesInRoom.isEmpty()) {
                         cText("Congrats, you killed them all!");
@@ -314,7 +310,12 @@ private void enemyRoomCombat() {
                     }
                 }
             }
+            player.enemyDoesDamage(enemyDamage);
+            cText(enemyName + " does " + enemyDamage + " to " + player.getPlayerName());
+            isPlayerDead();
+            cText(player.healthCheck());
         }
+        enemiesInRoom.removeAll(deadEnemies);
     }
 }
 //TODO ADD SNARK TO THIS
