@@ -34,4 +34,7 @@ public class EnemyRoom extends Room {
     public ArrayList<Enemy> getEnemyList() {
         return roomEncounter;
     }
+    public boolean hasBeenHere() {
+        return hasEnteredRoom;
+    }
 }

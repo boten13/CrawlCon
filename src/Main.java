@@ -250,12 +250,14 @@ public boolean checkDirection(int y, int x) {
 public void enterRoom(int y, int x) {
     Room room = currentLevel.getRoom(y, x);
     if (room instanceof EnemyRoom){
-        cText(room.getDescription());
-        ((EnemyRoom) room).enterRoom();
-        //TODO: Have more than one enemy populate correctly
-        enemiesInRoom = ((EnemyRoom) room).getEnemyList();
-        startCombat();
-        //TODO: Method to turn enemy bodies into dead body objects and have noncombative states
+        if (((EnemyRoom) room).hasBeenHere()){
+            cText("The bodies have disappeared but the memories of the horrors remain.");
+        } else {
+            cText(room.getDescription());
+            ((EnemyRoom) room).enterRoom();
+            enemiesInRoom = ((EnemyRoom) room).getEnemyList();
+            startCombat();
+        }
     } else if (room instanceof SafehouseRoom){
         cText("You are safe here crawler.");
     }
@@ -282,41 +284,50 @@ private void startCombat() {
         cText(combatCommands.toString());
         gameState = GameState.COMBAT;
 }
-//TODO: Figure out linear combat system where target gets damaged then rest of room attacks
+//TODO: ADD PLAYER DODGE CHANCE, ADD WHO INTIATES COMBAT
 //Combat system for inside an enemy-room
 private void enemyRoomCombat() {
-    if (!enemiesInRoom.isEmpty()) {
-        ArrayList<Enemy> deadEnemies = new ArrayList<>();
-        for (Enemy enemy: enemiesInRoom) {
-            String enemyName = enemy.getMonsterName();
-            int enemyDamage = enemy.getDamage();
-            if (enemyName.equalsIgnoreCase(userCommand)) {
-                int pDmg = 50;
-                enemy.playerDamagesEnemy(pDmg);
-                player.enemyDoesDamage(enemyDamage);
-                cText(enemy.getMonsterName() + " does " + enemyDamage + " to you.");
-                cText(player.getPlayerName() + " does " + pDmg + " to " + enemy.getMonsterName());
-                cText(player.healthCheck());
-                isPlayerDead();
-                if (isMobDead(enemy)) {
-                    cText(Snark.snarkyKill(enemyName, player.getPlayerName()));
-                    player.addExpGivenFromKill(enemy.getEnemyExpGiven());
-                    player.getExpRequiredForLeveling();
-                    deadEnemies.add(enemy);
-                    gameState = GameState.COMBAT;
-                    if (enemiesInRoom.isEmpty()) {
-                        cText("Congrats, you killed them all!");
-                        gameState = GameState.REG_MENU;
-                    }
-                }
-            }
-            player.enemyDoesDamage(enemyDamage);
-            cText(enemyName + " does " + enemyDamage + " to " + player.getPlayerName());
-            isPlayerDead();
-            cText(player.healthCheck());
-        }
-        enemiesInRoom.removeAll(deadEnemies);
+    if (enemiesInRoom.isEmpty()) {
+        cText("Congrats, you killed them all!");
+        gameState = GameState.REG_MENU;
+        return;
     }
+    Enemy target = enemiesInRoom.stream()
+            .filter(enemy -> enemy.getMonsterName().equalsIgnoreCase(userCommand))
+            .findFirst().orElse(null);
+    ArrayList<Enemy> deadEnemies = new ArrayList<>();
+    if (target == null) {
+        cText(Snark.notAWord(userCommand, player.getPlayerName()));
+        return;
+    }
+    targetCombat(target, target.getDamage());
+    boolean isDead = isMobDead(target);
+    if (isDead) {
+        deadEnemies.add(target);
+    }
+    enemiesInRoom.removeAll(deadEnemies);
+    for (Enemy enemy: enemiesInRoom) {
+        String enemyName = enemy.getMonsterName();
+        int enemyDamage = enemy.getDamage();
+        player.enemyDoesDamage(enemyDamage);
+        cText(enemyName + " does " + enemyDamage + " to " + player.getPlayerName());
+        isPlayerDead();
+        cText(player.healthCheck());
+    }
+    if (!enemiesInRoom.isEmpty()) {
+        gameState = GameState.COMBAT;
+        cText("What would you like to do now?");
+    } else {
+        cText(Snark.snarkyWait(player.getPlayerName()));
+        gameState = GameState.REG_MENU;
+    }
+}
+private void targetCombat(Enemy enemy, int enemyDamage) {
+    int pDmg = 5;
+    enemy.playerDamagesEnemy(pDmg);
+    cText(player.getPlayerName() + " does " + pDmg + " to " + enemy.getMonsterName());
+    cText(player.healthCheck());
+    isPlayerDead();
 }
 //TODO ADD SNARK TO THIS
 //Run From Creature. (Small chance of succeeding, failure will result in damage to player.)
@@ -424,11 +435,15 @@ public void isPlayerDead() {
 }
 //Checks if the mob has died
 private boolean isMobDead(Enemy enemy) {
-    if (enemy.getEnemyHealth() < 1) {
-        return true;
-    } else {
-        return false;
+    boolean isDead = false;
+if (enemy.getEnemyHealth() < 1) {
+    isDead = true;
+        cText(Snark.snarkyKill(enemy.getMonsterName(), player.getPlayerName()));
+        player.addExpGivenFromKill(enemy.getEnemyExpGiven());
+        player.getExpRequiredForLeveling();
+        gameState = GameState.COMBAT;
     }
+return isDead;
 }
 //Ends the game
 private void endGame() {
