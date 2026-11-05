@@ -39,7 +39,7 @@ public class Weapons {
 
     public boolean doesCritHappen() {
         int crit = rand.nextInt(0, 101);
-        if (critChance <= crit) {
+        if (critChance >= crit) {
             return true;
         } else {
             return false;

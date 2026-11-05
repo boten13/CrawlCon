@@ -74,7 +74,7 @@ public class Player {
     //Chance to dodge an attack
     public boolean doesPlayerDodge() {
         int dodges = rand.nextInt(0, 101);
-        if (playerDodgeChance <= dodges) {
+        if (playerDodgeChance >= dodges) {
             return true;
         } else {
             return false;
@@ -93,7 +93,7 @@ public class Player {
 
     //Create random amount of damage user provides without weapon
     public int getRandomPlayerDamage() {
-        playerDamage = rand.nextInt((playerLevel), (int)(10 * (playerLevel * 0.5)));
+        playerDamage = rand.nextInt((playerLevel), (int)((10 * (playerLevel * 0.5)) + 1));
         return playerDamage;
     }
 

@@ -325,8 +325,9 @@ private void targetCombat(Enemy enemy) {
 //Run From Creature. (Small chance of succeeding, failure will result in damage to player.)
 private void runAway() {
     for (int i = 0; i < enemiesInRoom.size(); i++) {
-        cText(enemiesInRoom.get(i).getMonsterName() +" does " + enemiesInRoom.get(i).getDamage() + " damage.");
-        player.enemyDoesDamage(enemiesInRoom.get(i).getDamage());
+        int enemyDamage = enemiesInRoom.get(i).getDamage();
+        cText(enemiesInRoom.get(i).getMonsterName() +" does " + enemyDamage + " damage.");
+        player.enemyDoesDamage(enemyDamage);
         isPlayerDead();
     }
 }
@@ -339,8 +340,9 @@ private void useAnItemFromInventory() {
 //Talk with Creature (Will have rare chance of having discussion with creature.)... MAYBE
 private void talkWithCreature() {
     for (int i = 0; i < enemiesInRoom.size(); i++) {
-        cText(enemiesInRoom.get(i).getMonsterName() + " does " + enemiesInRoom.get(i).getDamage() + " damage.");
-        player.enemyDoesDamage(enemiesInRoom.get(i).getDamage());
+        int enemyDamage = enemiesInRoom.get(i).getDamage();
+        cText(enemiesInRoom.get(i).getMonsterName() + " does " + enemyDamage + " damage.");
+        player.enemyDoesDamage(enemyDamage);
         isPlayerDead();
     }
 }
@@ -396,7 +398,7 @@ private void cheatMode() {
  * Will need help on parsing in intel from player class and mob class to preform combat logic here.
  */
 public void isPlayerDead() {
-    if (player.getPlayersHealth() < 1) {
+    if (player.getPlayersHealth() <= 0) {
         cText(player.getPlayerName() + " has died. I am actually shocked because the developers made this game pretty easy.");
         JOptionPane.showMessageDialog(null, "You have died");
         System.exit(0);
