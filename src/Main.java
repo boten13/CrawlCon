@@ -317,7 +317,6 @@ private void enemyRoomCombat() {
         return;
     }
     targetCombat(target);
-    int enemyExpGiven = target.getEnemyExpGiven();
     boolean isDead = isMobDead(target);
     if (isDead) {
         deadEnemies.add(target);
