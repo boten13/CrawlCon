@@ -1,9 +1,6 @@
 //All the imported packages
 import EnemyTypes.Enemy;
-import Rooms.EnemyRoom;
-import Rooms.Floor;
-import Rooms.Room;
-import Rooms.SafehouseRoom;
+import Rooms.*;
 import Util.GameState;
 import Util.Snark;
 import GameAssets.*;
@@ -37,9 +34,10 @@ private final String USE_ITEM = "USE ITEM";
 private final String TALK = "TALK";
 private final String CHEAT = "CHEAT";
 
-//Generate goblin Object
-Enemy goblin = null;
+//Placeholder lists for enemies
 private ArrayList<Enemy> enemiesInRoom = new ArrayList<>();
+//Placeholder lists for rats
+private ArrayList<Enemy> ratsInRoom = new ArrayList<>();
 
 //Initiates and stores name given for player
 Player player;
@@ -184,6 +182,13 @@ private void processInput(String userCommand){
         case GameState.CHOOSE_ENEMY://Combat for multi-enemy-rooms
             enemyRoomCombat();
             break;
+            //TODO: Clean this up, organize it better? Possibly new arraylist
+        case GameState.RAT_TME:
+            if ("Smoosh".equalsIgnoreCase(userCommand)) {
+                smooshTheRats();
+            } else if ("leave".equalsIgnoreCase(userCommand))
+                gameState = GameState.REG_MENU;
+                break;
     }
 }
 //Converts Strings to output on GameDisplay -- ShortHanded for ConvertText
@@ -193,13 +198,17 @@ private void cText(String text) {
 }
 // TODO: Move all direction mehthods into different directory
 //Function to describe what player can see.
+//TODO: Clean this up with snark packages
 private void lookAround() {
-    cText("You can see nothing right now, the developers haven't programmed the space in which we exist. " +
-            "I say we, because I am referring to myself as well as you. " +
-            "Currently I am just words appearing in front of you coming from the dark abyss. " +
-            "Well, I suppose even if they had created a space in which you could see, I would still just " +
-            "be a words on a page that you are reading and nothing more. " +
-            "Alright, enough of that dark rabbit hole. Point is, there is nothing to see right now.");
+    Hallway room = (Hallway) currentLevel.getRoom(player.getYLoc(), player.getXLoc());
+    if (room.doesItHaveRats()) {
+        ratsInRoom = room.getRatsInTheRoom();
+        cText("You see " + ratsInRoom.size() + " in the hallway.");
+        cText("Options: Smoosh or leave.");
+        gameState = GameState.RAT_TME;
+    } else {
+        cText(room.getDescription());
+    }
 }
 //Move Player East
 private void headEast() {
@@ -255,6 +264,8 @@ public void enterRoom(int y, int x) {
         }
     } else if (room instanceof SafehouseRoom){
         cText("You are safe here crawler.");
+    } else if (room instanceof Hallway) {
+        ((Hallway) room).chanceOfRats();
     }
 }
 //Collect enemy names list
@@ -271,6 +282,23 @@ private void startCombat() {
         cText("Here are your combat options: ");
         cText(combatCommands.toString());
         gameState = GameState.COMBAT;
+}
+//TODO: clean this up with snark packages
+//Function for smooshing rats and getting exp
+private void smooshTheRats() {
+    ArrayList<Enemy> deadRats = new ArrayList<>();
+    int amountOfRats = ratsInRoom.size();
+    int totalExpFromRats = 0;
+    for (Enemy rats: ratsInRoom){
+        int ratsGivenExp = rats.getEnemyExpGiven();
+        deadRats.add(rats);
+        totalExpFromRats += ratsGivenExp;
+    }
+    ratsInRoom.removeAll(deadRats);
+    player.addExpGivenFromKill(totalExpFromRats);
+    cText("You found " + amountOfRats + " in the hallway and you violently smooshed them to death with your feetsies.\n"
+    + "You have rat guts all over your feet, the hallway shook in joy and you gained " + totalExpFromRats + "!");
+    gameState = GameState.REG_MENU;
 }
 //TODO: ADD WHO INTIATES COMBAT
 //Combat system for inside an enemy-room
@@ -289,6 +317,7 @@ private void enemyRoomCombat() {
         return;
     }
     targetCombat(target);
+    int enemyExpGiven = target.getEnemyExpGiven();
     boolean isDead = isMobDead(target);
     if (isDead) {
         deadEnemies.add(target);
@@ -319,7 +348,6 @@ private void targetCombat(Enemy enemy) {
     enemy.playerDamagesEnemy(pDmg);
     cText(player.getPlayerName() + " does " + pDmg + " to " + enemy.getMonsterName());
     cText(player.healthCheck());
-    isPlayerDead();
 }
 //TODO ADD SNARK TO THIS
 //Run From Creature. (Small chance of succeeding, failure will result in damage to player.)

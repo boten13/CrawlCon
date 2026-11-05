@@ -5,4 +5,5 @@ public enum GameState {
     REG_MENU,
     COMBAT,
     CHOOSE_ENEMY,
+    RAT_TME,
 }

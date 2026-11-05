@@ -21,7 +21,6 @@ public class EnemyFactory {
     public static Enemy createRat() {
         Enemy enemy = new Enemy();
         Random rand = new Random();
-        enemy.enemyHealth = rand.nextInt(1, 7);
         enemy.enemyExpGiven = rand.nextInt(10, 18);
         enemy.type = EnemyType.Rat;
 
