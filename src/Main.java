@@ -315,7 +315,7 @@ private void enemyRoomCombat() {
     }
 }
 private void targetCombat(Enemy enemy) {
-    int pDmg = player.getRandomPlayerDamageWithoutWeapon();
+    int pDmg = player.getRandomPlayerDamage();
     enemy.playerDamagesEnemy(pDmg);
     cText(player.getPlayerName() + " does " + pDmg + " to " + enemy.getMonsterName());
     cText(player.healthCheck());

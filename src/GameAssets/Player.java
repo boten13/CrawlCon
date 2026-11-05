@@ -92,8 +92,8 @@ public class Player {
     }
 
     //Create random amount of damage user provides without weapon
-    public int getRandomPlayerDamageWithoutWeapon() {
-        playerDamage = rand.nextInt(1, 10);
+    public int getRandomPlayerDamage() {
+        playerDamage = rand.nextInt((playerLevel), (int)(10 * (playerLevel * 0.5)));
         return playerDamage;
     }
 
