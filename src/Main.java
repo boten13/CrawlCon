@@ -22,7 +22,6 @@ private final String LAZY_E = "E";
 private final String DIRECTION_WEST = "WEST";
 private final String LAZY_W = "W";
 private final String MAP_CHECK = "MAP";
-private final String FIGHT = "FIGHT";
 private final String INVENTORY = "INVENTORY";
 private final String CHARACTER_SHEET = "CHARACTER SHEET";
 private final String END_GAME = "END GAME";
@@ -56,12 +55,12 @@ private Floor currentLevel;
 
 //List of commands the player is prompted to use.
 private ArrayList<String> playerCommands = new ArrayList<>(
-        List.of(DIRECTION_EAST, DIRECTION_NORTH, DIRECTION_SOUTH, DIRECTION_WEST, LOOK_AROUND, MAP_CHECK, FIGHT,
+        List.of(DIRECTION_EAST, DIRECTION_NORTH, DIRECTION_SOUTH, DIRECTION_WEST, LOOK_AROUND, MAP_CHECK,
                 INVENTORY, CHARACTER_SHEET, END_GAME)
 );
 //Actual Menu items with hidden functions
 private ArrayList<String> actualMenu = new ArrayList<>(
-        List.of(DIRECTION_EAST, DIRECTION_NORTH, DIRECTION_SOUTH, DIRECTION_WEST, LOOK_AROUND, MAP_CHECK, FIGHT,
+        List.of(DIRECTION_EAST, DIRECTION_NORTH, DIRECTION_SOUTH, DIRECTION_WEST, LOOK_AROUND, MAP_CHECK,
                 INVENTORY, CHARACTER_SHEET, END_GAME, REG_MENU, LAZY_E, LAZY_W, LAZY_N, LAZY_S)
 );
 //List of commands the player is prompted to use while fighting.
@@ -136,9 +135,6 @@ private void processInput(String userCommand){
                 gameDisplayWindow.getOutputConsoleResponse().setText("Hope you remembered what I told you.");
                 gameDisplayWindow.toggle();
                 checkMap();
-                //TODO: Fight should only work when in hallway with rats and no where else
-            } else if (FIGHT.equalsIgnoreCase(userCommand)) {
-                startCombat();
             } else if (INVENTORY.equalsIgnoreCase(userCommand)) {
                 checkInventory();
             } else if (CHARACTER_SHEET.equalsIgnoreCase(userCommand)) {
@@ -152,7 +148,7 @@ private void processInput(String userCommand){
             break;
         case GameState.COMBAT://Combat start case
             //Hidden menu items in combat menu
-            if (COMBAT_MENU.equalsIgnoreCase(userCommand)){
+            if (COMBAT_MENU.equalsIgnoreCase(userCommand)) {
                 cText(combatCommands.toString());
                 gameState = GameState.COMBAT;
             }
@@ -182,12 +178,17 @@ private void processInput(String userCommand){
         case GameState.CHOOSE_ENEMY://Combat for multi-enemy-rooms
             enemyRoomCombat();
             break;
-            //TODO: Clean this up, organize it better? Possibly new arraylist
+        //TODO: Clean this up, organize it better? Possibly new arraylist
         case GameState.RAT_TME:
             if ("Smoosh".equalsIgnoreCase(userCommand)) {
                 smooshTheRats();
-            } else if ("leave".equalsIgnoreCase(userCommand))
+            } else if ("Leave".equalsIgnoreCase(userCommand)) {
+                cText("You farted and the rats all ran off, startled by the sound of that late night Taco Bell run.");
+                cText(Snark.snarkyWait(player.getPlayerName()));
                 gameState = GameState.REG_MENU;
+            } else {
+                cText(Snark.notAWord(userCommand, player.getPlayerName()));
+            }
                 break;
     }
 }
@@ -200,12 +201,15 @@ private void cText(String text) {
 //Function to describe what player can see.
 //TODO: Clean this up with snark packages
 private void lookAround() {
-    Hallway room = (Hallway) currentLevel.getRoom(player.getYLoc(), player.getXLoc());
-    if (room.doesItHaveRats()) {
-        ratsInRoom = room.getRatsInTheRoom();
-        cText("You see " + ratsInRoom.size() + " in the hallway.");
-        cText("Options: Smoosh or leave.");
-        gameState = GameState.RAT_TME;
+    Room room = currentLevel.getRoom(player.getYLoc(), player.getXLoc());
+    if (room instanceof Hallway) {
+        if (((Hallway) room).doesItHaveRats()) {
+            ratsInRoom = ((Hallway) room).getRatsInTheRoom();
+            cText("You see " + ratsInRoom.size() + " in the hallway.");
+            cText("Options: Smoosh or leave.");
+            gameState = GameState.RAT_TME;
+            ((Hallway) room).setHasRats(false);
+        }
     } else {
         cText(room.getDescription());
     }
@@ -297,7 +301,7 @@ private void smooshTheRats() {
     ratsInRoom.removeAll(deadRats);
     player.addExpGivenFromKill(totalExpFromRats);
     cText("You found " + amountOfRats + " in the hallway and you violently smooshed them to death with your feetsies.\n"
-    + "You have rat guts all over your feet, the hallway shook in joy and you gained " + totalExpFromRats + "!");
+    + "You have rat guts all over your feet, the hallway shook in joy and you gained " + totalExpFromRats + "!\n");
     gameState = GameState.REG_MENU;
 }
 //TODO: ADD WHO INTIATES COMBAT
@@ -404,6 +408,7 @@ private void characterSheet() {
     if (player.getPlayerExp() == 0) {
         cText("You literally just got in here, go fight something you dullard.");
     } else {
+
         cText("You have " + player.healthCheck() + " health points.");
         cText("You need " + player.getNeededExp() + " experience points before leveling up.");
         cText("You are currently level " + player.getPlayerLevel() + ".");

@@ -98,9 +98,9 @@ public class Player {
     }
 
     //Add exp from kills
-    public int addExpGivenFromKill(int expGiven) {
+    public void addExpGivenFromKill(int expGiven) {
         playerExp += expGiven;
-        return playerExp;
+        getExpRequiredForLeveling();
     }
 
     //Damage to player from goblin logic

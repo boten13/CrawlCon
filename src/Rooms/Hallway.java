@@ -31,5 +31,8 @@ public class Hallway extends Room {
     public boolean doesItHaveRats() {
         return hasRats;
     }
+    public void setHasRats(boolean doesIt) {
+        hasRats = doesIt;
+    }
 }
 //TODO: Have chance of gen rats to smosh with toesys
