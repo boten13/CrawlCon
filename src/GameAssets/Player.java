@@ -7,6 +7,8 @@ import java.util.Map;
  * Leveling will be stored here
  * Inventory might be stored here as well, don't quote me on that
  */
+
+//TODO: HASHMAP FOR PLAYER EQUIPMENT
 public class Player {
     private String name;
     private int playerExp;
